@@ -1,14 +1,11 @@
 package com.example.composejoyride
 
 import com.example.composejoyride.data.repositories.RhymeRepository
-import com.example.composejoyride.di.models.Rhyme
 import com.example.composejoyride.ui.viewModels.RhymeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -16,6 +13,8 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -48,28 +47,37 @@ class RhymeViewModelTest {
     @Test
     fun `findRhymes updates result on success`() = runTest {
         viewModel.setInput("дорога")
-        val rhymes = listOf("подстрога", "берлога")
-        coEvery { repository.getRhymes(Rhyme("дорога", 2)) } returns rhymes
+        val rhymes = listOf("недорога", "строга")
+        coEvery { repository.getRhymes("дорога", 0) } returns rhymes
 
-        viewModel.findRhymes(2)
+        viewModel.findRhymes(0)
         advanceUntilIdle()
 
-        runBlocking {
-            delay(100)
-            assertEquals(rhymes, viewModel.result.value)
-        }
+        assertEquals(rhymes, viewModel.result.value)
+        assertFalse(viewModel.hasError.value)
+        assertFalse(viewModel.isLoading.value)
     }
 
     @Test
-    fun `findRhymes sets Error on failure`() = runTest {
+    fun `findRhymes sets error on failure`() = runTest {
         viewModel.setInput("море")
-        coEvery { repository.getRhymes(any()) } throws Exception("fail")
+        coEvery { repository.getRhymes("море", 1) } throws Exception("fail")
 
         viewModel.findRhymes(1)
         advanceUntilIdle()
-        runBlocking {
-            delay(100)
-            assertEquals(listOf("Ошибка!"), viewModel.result.value)
-        }
+
+        assertTrue(viewModel.hasError.value)
+        assertEquals(emptyList<String>(), viewModel.result.value)
+        assertFalse(viewModel.isLoading.value)
+    }
+
+    @Test
+    fun `findRhymes ignores blank input`() = runTest {
+        viewModel.setInput("   ")
+        viewModel.findRhymes(0)
+        advanceUntilIdle()
+
+        assertEquals(emptyList<String>(), viewModel.result.value)
+        assertFalse(viewModel.isLoading.value)
     }
 }

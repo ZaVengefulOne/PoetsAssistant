@@ -3,6 +3,9 @@ package com.example.composejoyride.ui.theme.liquid
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -16,17 +19,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.kyant.backdrop.Backdrop
-import com.kyant.backdrop.backdrops.rememberCombinedBackdrop
-import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import com.kyant.backdrop.drawBackdrop
 import com.kyant.backdrop.effects.blur
 import com.kyant.backdrop.effects.lens
@@ -44,7 +46,10 @@ fun LiquidBottomBar(
     tabCount: Int,
     content: @Composable (index: Int) -> Unit
 ) {
-    val barBackdrop = rememberLayerBackdrop()
+    if (tabCount <= 0) return
+
+    val surfaceTint = liquidGlassSurfaceTint()
+    val pillColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.22f)
     val scope = rememberCoroutineScope()
     val animatedIndex = remember { Animatable(selectedIndex.toFloat()) }
 
@@ -64,14 +69,13 @@ fun LiquidBottomBar(
             .height(72f.dp)
             .drawBackdrop(
                 backdrop = backdrop,
-                exportedBackdrop = barBackdrop,
                 shape = { RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp) },
                 effects = {
                     vibrancy()
                     blur(4f.dp.toPx())
                     lens(24f.dp.toPx(), 48f.dp.toPx())
                 },
-                onDrawSurface = { drawRect(Color.White.copy(alpha = 0.15f)) }
+                onDrawSurface = { drawRect(surfaceTint) }
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -92,15 +96,9 @@ fun LiquidBottomBar(
                     .offset(x = offsetX)
                     .width(pillWidth)
                     .fillMaxHeight()
-                    .drawBackdrop(
-                        backdrop = rememberCombinedBackdrop(backdrop, barBackdrop),
-                        shape = { AbsoluteContinuousCapsule },
-                        effects = {
-                            vibrancy()
-                            blur(3f.dp.toPx())
-                            lens(16f.dp.toPx(), 32f.dp.toPx(), chromaticAberration = true)
-                        },
-                        onDrawSurface = { drawRect(Color.White.copy(alpha = 0.15f)) }
+                    .background(
+                        color = pillColor,
+                        shape = AbsoluteContinuousCapsule,
                     )
             )
 
@@ -113,17 +111,16 @@ fun LiquidBottomBar(
                     Box(
                         Modifier
                             .weight(1f)
-                            .fillMaxHeight(),
-                        contentAlignment = Alignment.Center
+                            .fillMaxHeight()
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                role = Role.Tab,
+                                onClick = { onTabSelected(index) },
+                            ),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        LiquidButton(
-                            onClick = { onTabSelected(index) },
-                            backdrop = barBackdrop,
-                            modifier = Modifier.fillMaxWidth(0.9f),
-                            isInteractive = true
-                        ) {
-                            content(index)
-                        }
+                        content(index)
                     }
                 }
             }

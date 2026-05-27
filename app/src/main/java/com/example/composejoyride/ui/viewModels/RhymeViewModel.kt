@@ -5,47 +5,68 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composejoyride.data.repositories.RhymeRepository
-import com.example.composejoyride.di.models.Rhyme
+import com.example.composejoyride.data.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RhymeViewModel @Inject constructor(private val repository: RhymeRepository) : ViewModel() {
+class RhymeViewModel @Inject constructor(
+    private val repository: RhymeRepository,
+) : ViewModel() {
 
     private val _input = MutableStateFlow("")
-    val input: StateFlow<String> get() = _input
+    val input: StateFlow<String> = _input.asStateFlow()
 
-    private val _result = MutableStateFlow<List<String>>(listOf())
-    val result: StateFlow<List<String>> get() = _result
+    private val _result = MutableStateFlow<List<String>>(emptyList())
+    val result: StateFlow<List<String>> = _result.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    private val _hasError = MutableStateFlow(false)
+    val hasError: StateFlow<Boolean> = _hasError.asStateFlow()
 
     fun setInput(newInput: String) {
         _input.value = newInput
     }
 
-    fun findRhymes(stress: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun vowelCount(word: String): Int =
+        word.count { it in Constants.vowels }
+
+    fun findRhymes(stressIndex: Int) {
+        val word = _input.value.trim()
+        if (word.isBlank()) return
+
+        viewModelScope.launch {
+            _isLoading.value = true
+            _hasError.value = false
+            _result.value = emptyList()
             try {
-                _result.value = repository.getRhymes(Rhyme(input.value, stress))
+                _result.value = repository.getRhymes(word, stressIndex)
             } catch (e: Exception) {
-                _result.value = listOf("Ошибка!")
+                Log.e(TAG, "findRhymes failed for word=$word stress=$stressIndex", e)
+                _hasError.value = true
+                _result.value = emptyList()
+            } finally {
+                _isLoading.value = false
             }
         }
     }
-
 
     fun copyToClipBoard(context: Context, rhymeItem: String) {
         val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clipData: ClipData = ClipData.newPlainText("text", rhymeItem)
         clipboardManager.setPrimaryClip(clipData)
-        //Toast.makeText(context, "Скопировано в буфер обмена!", Toast.LENGTH_LONG).show()
+    }
+
+    private companion object {
+        const val TAG = "RhymeViewModel"
     }
 }

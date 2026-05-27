@@ -8,6 +8,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
@@ -21,15 +22,20 @@ import com.example.composejoyride.ui.theme.TheFont
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VengTopAppBar(navigationAction: () -> Unit, title: String, navigationIcon: ImageVector, style: TextStyle = MaterialTheme.typography.titleLarge,) {
-
+fun VengTopAppBar(
+    navigationAction: () -> Unit,
+    title: String,
+    navigationIcon: ImageVector,
+    style: TextStyle = MaterialTheme.typography.titleLarge,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
     TopAppBar(
         colors = TopAppBarColors(
             containerColor = MaterialTheme.colorScheme.secondary,
             scrolledContainerColor = MaterialTheme.colorScheme.secondary,
-            navigationIconContentColor = MaterialTheme.colorScheme.tertiary,
+            navigationIconContentColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.secondary,
-            actionIconContentColor = MaterialTheme.colorScheme.secondary,
+            actionIconContentColor = MaterialTheme.colorScheme.primary,
             subtitleContentColor = MaterialTheme.colorScheme.secondary
         ),
         title = {
@@ -49,7 +55,7 @@ fun VengTopAppBar(navigationAction: () -> Unit, title: String, navigationIcon: I
                     contentDescription = "Navigation Icon"
                 )
             }
-
-        }
+        },
+        actions = actions,
     )
 }

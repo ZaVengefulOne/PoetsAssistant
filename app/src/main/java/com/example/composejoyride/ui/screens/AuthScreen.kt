@@ -25,8 +25,8 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import com.example.composejoyride.ui.theme.composables.VengOutlinedTextField
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -216,17 +216,19 @@ fun AuthScreen(
                     },
                     containerColor = MaterialTheme.colorScheme.background,
                     text = {
-                        Column {
-                            OutlinedTextField(
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            VengOutlinedTextField(
                                 value = login,
                                 onValueChange = { login = it },
-                                label = { Text("Логин") }
+                                label = { Text("Логин", color = MaterialTheme.colorScheme.tertiary) },
+                                singleLine = true,
                             )
-                            OutlinedTextField(
+                            VengOutlinedTextField(
                                 value = password,
                                 onValueChange = { password = it },
-                                label = { Text("Пароль") },
-                                visualTransformation = PasswordVisualTransformation()
+                                label = { Text("Пароль", color = MaterialTheme.colorScheme.tertiary) },
+                                visualTransformation = PasswordVisualTransformation(),
+                                singleLine = true,
                             )
                         }
                     },

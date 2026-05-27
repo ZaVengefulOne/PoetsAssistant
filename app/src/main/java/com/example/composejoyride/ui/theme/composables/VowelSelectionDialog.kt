@@ -1,6 +1,5 @@
 package com.example.composejoyride.ui.theme.composables
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,7 +15,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,69 +24,64 @@ import com.example.composejoyride.R
 import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.ui.theme.TheFont
 
+/**
+ * @param onStressIndexSelected Rifmovka index: 0 = last vowel, 1 = second-to-last, etc.
+ */
 @Composable
 fun VowelSelectionDialog(
     word: String,
     onDismissRequest: () -> Unit,
-    onVowelSelected: (vowelIndex: Int) -> Unit
+    onStressIndexSelected: (stressIndex: Int) -> Unit,
 ) {
-
     val vowelPositions = word.withIndex()
         .filter { it.value in Constants.vowels }
         .map { it.index }
-//        .reversed()
 
-    val usedVowels = vowelPositions.reversed()
-
-    LaunchedEffect(Unit) {
-        Log.d("VENGEFUL", vowelPositions.toString())
-        Log.d("VENGEFUL", usedVowels.toString())
-    }
+    val vowelsForDisplay = vowelPositions.asReversed()
 
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             tonalElevation = 8.dp,
-            modifier = Modifier
-                .padding(16.dp),
-            color = MaterialTheme.colorScheme.background
+            modifier = Modifier.padding(16.dp),
+            color = MaterialTheme.colorScheme.background,
         ) {
             Column(
                 modifier = Modifier
                     .padding(24.dp)
                     .wrapContentHeight(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = stringResource(R.string.vowels_amount, vowelPositions.size),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp),
                     color = MaterialTheme.colorScheme.tertiary,
-                    fontFamily = TheFont
+                    fontFamily = TheFont,
                 )
 
                 LazyRow(
                     horizontalArrangement = Arrangement.SpaceEvenly,
+                    reverseLayout = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 16.dp),
                 ) {
-                    itemsIndexed(vowelPositions) { index, position ->
+                    itemsIndexed(vowelsForDisplay) { stressIndex, position ->
                         Button(
                             onClick = {
-                                onVowelSelected(usedVowels[index]) //TODO: risky
+                                onStressIndexSelected(stressIndex)
                                 onDismissRequest()
                             },
                             shape = MaterialTheme.shapes.small,
                             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                            colors =
-                                ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
                         ) {
                             Text(
                                 text = word[position].toString(),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.tertiary,
-                                fontFamily = TheFont
+                                fontFamily = TheFont,
                             )
                         }
                     }
@@ -97,7 +90,7 @@ fun VowelSelectionDialog(
                     Text(
                         text = stringResource(R.string.cancel),
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontFamily = TheFont
+                        fontFamily = TheFont,
                     )
                 }
             }

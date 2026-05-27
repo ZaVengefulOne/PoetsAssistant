@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kyant.backdrop.Backdrop
 import com.kyant.backdrop.drawBackdrop
@@ -18,21 +20,24 @@ import com.kyant.backdrop.effects.vibrancy
 fun GlassCard(
     backdrop: Backdrop,
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit
+    shape: Shape = RoundedCornerShape(24.dp),
+    surfaceTint: Color,
+    contentPadding: Dp = 20.dp,
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
         modifier
             .drawBackdrop(
                 backdrop = backdrop,
-                shape = { RoundedCornerShape(24f.dp) },
+                shape = { shape },
                 effects = {
                     vibrancy()
                     blur(4f.dp.toPx())
                     lens(16f.dp.toPx(), 32f.dp.toPx())
                 },
-                onDrawSurface = { drawRect(Color.White.copy(alpha = 0.15f)) }
+                onDrawSurface = { drawRect(surfaceTint) },
             )
-            .padding(20f.dp),
-        content = content
+            .padding(contentPadding),
+        content = content,
     )
 }

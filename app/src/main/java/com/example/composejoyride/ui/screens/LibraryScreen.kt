@@ -3,41 +3,36 @@ package com.example.composejoyride.ui.screens
 //noinspection UsingMaterialAndMaterial3Libraries
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,7 +43,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -65,7 +59,11 @@ import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengListItem
+import com.example.composejoyride.ui.theme.composables.VengOutlinedTextField
+import com.example.composejoyride.ui.theme.composables.VengPlaceholderText
 import com.example.composejoyride.ui.theme.composables.VengTopAppBar
+import com.example.composejoyride.ui.theme.liquid.LocalScrollBottomInset
 import com.example.composejoyride.ui.viewModels.ArticleViewModel
 import com.example.composejoyride.ui.viewModels.LibraryViewModel
 
@@ -92,8 +90,8 @@ fun Library(
         viewModel.getArticles()
     }
 
-    val buttonColor = MaterialTheme.colorScheme.secondary
-    val buttonText = MaterialTheme.colorScheme.tertiary
+    val colorScheme = MaterialTheme.colorScheme
+    val scrollBottomInset = LocalScrollBottomInset.current
     val articles = viewModel.articleItems.collectAsState().value
     val isLoaded = viewModel.isLoaded.collectAsState().value
 
@@ -152,7 +150,7 @@ fun Library(
                 }
             } else {
                 Row {
-                    OutlinedTextField(
+                    VengOutlinedTextField(
                         value = searchText.value,
                         onValueChange = {
                             searchText.value = it
@@ -162,22 +160,12 @@ fun Library(
                             .onFocusChanged { isBottomBarVisible.value = !it.isFocused },
                         placeholder = {
                             Text(
-                                "Поиск...",
+                                text = "Поиск...",
                                 modifier = Modifier.clickable { expanded.value = true },
-                                color = MaterialTheme.colorScheme.primary,
-                                fontFamily = TheFont
+                                color = colorScheme.onSurface.copy(alpha = 0.55f),
+                                fontFamily = TheFont,
                             )
                         },
-                        colors = TextFieldDefaults.colors(
-                            unfocusedIndicatorColor = Color.Black,
-                            focusedIndicatorColor = Color.Cyan,
-                            focusedPlaceholderColor = Color.Cyan,
-                            focusedTextColor = Color.Black,
-                            focusedTrailingIconColor = Color.Cyan,
-                            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                            focusedContainerColor = MaterialTheme.colorScheme.background
-                        ),
-                        shape = RoundedCornerShape(16.dp),
                         singleLine = true,
                         keyboardActions = KeyboardActions(
                             onDone = {
@@ -224,47 +212,39 @@ fun Library(
                 }
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(
+                        start = 4.dp,
+                        end = 4.dp,
+                        bottom = scrollBottomInset + 8.dp,
+                    ),
                     content = {
                         items(filteredArticleList.value.ifEmpty { articles }) { articleItem ->
-                            Card(
+                            VengListItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(4.dp)
-                                    .clickable {
-                                        articleViewModel.getArticle(articleItem.articleLink)
-                                        navController.navigate(NoteGraph.ARTICLE_SCREEN)
-                                    }
-                                    .size(80.dp),
-                                shape = CardDefaults.elevatedShape,
-                                elevation = CardDefaults.cardElevation(12.dp),
-                                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary),
-                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+                                    .height(72.dp),
+                                onClick = {
+                                    articleViewModel.getArticle(articleItem.articleLink)
+                                    navController.navigate(NoteGraph.ARTICLE_SCREEN)
+                                },
                             ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
-                                    Icon(
-                                        Icons.Filled.AutoStories,
-                                        contentDescription = "Article Icon",
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .background(buttonColor)
-                                            .padding(start = Dimens.paddingMedium),
-                                        tint = MaterialTheme.colorScheme.background
-                                    )
-                                    Text(
-                                        modifier = Modifier
-                                            .padding(start = Dimens.paddingMedium),
-                                        text = articleItem.articleTitle,
-                                        fontSize = 20.sp,
-                                        color = buttonText,
-                                        fontFamily = TheFont,
-                                        textAlign = TextAlign.Start
-                                    )
-                                }
-
+                                Icon(
+                                    Icons.Filled.AutoStories,
+                                    contentDescription = "Article Icon",
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .padding(start = Dimens.paddingMedium),
+                                    tint = colorScheme.primary,
+                                )
+                                Text(
+                                    modifier = Modifier.padding(start = Dimens.paddingMedium),
+                                    text = articleItem.articleTitle,
+                                    fontSize = 20.sp,
+                                    color = colorScheme.tertiary,
+                                    fontFamily = TheFont,
+                                    textAlign = TextAlign.Start,
+                                )
                             }
                         }
                     }

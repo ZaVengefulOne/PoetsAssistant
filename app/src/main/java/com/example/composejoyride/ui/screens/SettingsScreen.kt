@@ -76,9 +76,9 @@ fun Settings(navController: NavController, preferences: SharedPreferences) {
                 colors = TopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
                     scrolledContainerColor = MaterialTheme.colorScheme.secondary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.tertiary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.secondary,
-                    actionIconContentColor = MaterialTheme.colorScheme.secondary,
+                    actionIconContentColor = MaterialTheme.colorScheme.primary,
                     subtitleContentColor = MaterialTheme.colorScheme.secondary
                 ),
                 title = {
@@ -120,7 +120,7 @@ fun Settings(navController: NavController, preferences: SharedPreferences) {
                     Icon(
                         Icons.Default.Close,
                         contentDescription = "Закрыть",
-                        tint = MaterialTheme.colorScheme.tertiary
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
@@ -212,8 +212,7 @@ fun Settings(navController: NavController, preferences: SharedPreferences) {
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
-
-                // Пункт "О приложении"
+                
                 Row(
                     Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,

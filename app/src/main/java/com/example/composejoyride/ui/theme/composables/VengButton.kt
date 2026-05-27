@@ -1,17 +1,12 @@
 package com.example.composejoyride.ui.theme.composables
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -35,12 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composejoyride.data.utils.VengButtonType
-import com.example.composejoyride.ui.theme.DarkCyan
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
-import com.example.composejoyride.ui.theme.White
 import com.example.composejoyride.ui.theme.liquid.LiquidButton
-import com.kyant.backdrop.backdrops.rememberLayerBackdrop
+import com.example.composejoyride.ui.theme.liquid.LiquidGlassSupport
+import com.example.composejoyride.ui.theme.liquid.rememberIsolatedLiquidBackdrop
 
 @Composable
 fun VengButton(
@@ -55,11 +49,10 @@ fun VengButton(
     buttonType: VengButtonType
 ) {
 
-    val backgroundColor = MaterialTheme.colorScheme.secondary
-    val backdrop = rememberLayerBackdrop {
-        drawRect(backgroundColor)
-        drawContent()
-    }
+    val colorScheme = MaterialTheme.colorScheme
+    val liquidBackdrop = rememberIsolatedLiquidBackdrop(
+        tintColor = colorScheme.secondary,
+    )
 
     when (buttonType) {
         VengButtonType.Default -> {
@@ -108,8 +101,8 @@ fun VengButton(
                 colors = ButtonColors(
                     contentColor = MaterialTheme.colorScheme.primary,
                     containerColor = Color.Transparent,
-                    disabledContainerColor = Color.DarkGray,
-                    disabledContentColor = Color.Gray
+                    disabledContainerColor = colorScheme.surfaceVariant,
+                    disabledContentColor = colorScheme.onSurface.copy(alpha = 0.38f)
                 ),
             ) {
                 Row(horizontalArrangement = Arrangement.Center) {
@@ -181,14 +174,7 @@ fun VengButton(
         }
 
         VengButtonType.Liquid -> {
-            LiquidButton(
-                onClick = onClick,
-                backdrop = backdrop,
-                modifier = modifier,
-                isInteractive = isInteractive,
-                tint = buttonColor.contentColor,
-                surfaceColor = buttonColor.containerColor
-            ) {
+            val liquidContent: @Composable () -> Unit = {
                 Row(horizontalArrangement = Arrangement.Start) {
                     if (image != null) {
                         Icon(
@@ -205,15 +191,37 @@ fun VengButton(
                     }
                     Text(
                         text = text,
-                        modifier = Modifier
-                            .padding(start = Dimens.paddingLarge),
+                        modifier = Modifier.padding(start = Dimens.paddingLarge),
                         fontFamily = TheFont,
                         color = textColor,
                         fontSize = 22.sp
                     )
                 }
             }
-
+            if (!LiquidGlassSupport.enabled) {
+                Button(
+                    modifier = modifier,
+                    onClick = onClick,
+                    colors = buttonColor,
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = 10.dp,
+                        pressedElevation = 5.dp
+                    ),
+                ) {
+                    liquidContent()
+                }
+            } else {
+                LiquidButton(
+                    onClick = onClick,
+                    backdrop = liquidBackdrop,
+                    modifier = modifier,
+                    isInteractive = isInteractive,
+                    tint = buttonColor.contentColor,
+                    surfaceColor = buttonColor.containerColor,
+                    content = { liquidContent() },
+                )
+            }
         }
     }
 }
@@ -224,7 +232,7 @@ fun VengButtonPreview() {
     Row(
         Modifier
             .size(200.dp)
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.background),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -232,8 +240,7 @@ fun VengButtonPreview() {
             onClick = { },
             text = "Тест",
             image = Icons.Default.TipsAndUpdates,
-//            buttonColor = ButtonDefaults.outlinedButtonColors(DarkCyan),
-            textColor = Color.Black,
+            textColor = MaterialTheme.colorScheme.tertiary,
             buttonType = VengButtonType.Icon
         )
     }

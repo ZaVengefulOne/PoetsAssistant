@@ -10,13 +10,14 @@ import com.example.composejoyride.data.databases.NotesDatabase
 import com.example.composejoyride.data.repositories.ArticlesRepository
 import com.example.composejoyride.data.repositories.NotesRepository
 import com.example.composejoyride.data.repositories.RhymeRepository
+import com.example.composejoyride.data.rhyme.IRhymeProvider
+import com.example.composejoyride.data.rhyme.RifmovkaRhymeProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,7 +29,7 @@ object AppModule {
         return Room.databaseBuilder(
             context,
             NotesDatabase::class.java,
-            "notes"
+            "notes",
         ).fallbackToDestructiveMigration(true).build()
     }
 
@@ -45,8 +46,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRhymeRepository(interactor: ParseInteractor): RhymeRepository {
-        return RhymeRepository(interactor)
+    fun provideRhymeProvider(): IRhymeProvider = RifmovkaRhymeProvider()
+
+    @Provides
+    @Singleton
+    fun provideRhymeRepository(rhymeProvider: IRhymeProvider): RhymeRepository {
+        return RhymeRepository(rhymeProvider)
     }
 
     @Provides
@@ -55,14 +60,13 @@ object AppModule {
         return ParseInteractor()
     }
 
-
     @Provides
     @Singleton
     fun provideArticlesDatabase(@ApplicationContext context: Context): ArticlesDatabase {
         return Room.databaseBuilder(
             context,
             ArticlesDatabase::class.java,
-            "cache"
+            "cache",
         ).fallbackToDestructiveMigration(true).build()
     }
 
@@ -75,16 +79,10 @@ object AppModule {
     @Singleton
     fun provideArticlesRepository(
         interactor: ParseInteractor,
-        articlesDao: ArticlesDao
+        articlesDao: ArticlesDao,
     ): ArticlesRepository {
         return ArticlesRepository(interactor, articlesDao)
     }
-
-//    @Provides
-//    @Singleton
-//    fun provideApplication(@ApplicationContext context: Context): Application {
-//        return context as Application
-//    }
 
     @Provides
     @Singleton

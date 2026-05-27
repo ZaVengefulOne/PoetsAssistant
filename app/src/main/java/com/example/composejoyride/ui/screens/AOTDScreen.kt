@@ -24,7 +24,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +43,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -56,7 +54,9 @@ import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengFab
 import com.example.composejoyride.ui.theme.composables.VengTopAppBar
+import com.example.composejoyride.ui.theme.liquid.LocalScrollBottomInset
 import com.example.composejoyride.ui.viewModels.AOTDViewModel
 import com.example.composejoyride.ui.viewModels.ArticleViewModel
 import kotlinx.coroutines.launch
@@ -79,6 +79,7 @@ fun AOTD(navController: NavController) {
     var previousScrollPosition by remember { mutableIntStateOf(0) }
     var showScrollUpButton by remember { mutableStateOf(false) }
     val buttonText = MaterialTheme.colorScheme.tertiary
+    val scrollBottomInset = LocalScrollBottomInset.current
     val scrollState = rememberScrollState()
 
     if (!isLoaded && !showPB) {
@@ -111,7 +112,7 @@ fun AOTD(navController: NavController) {
             ) {
                 Icon(
                     Icons.Filled.Download, contentDescription = "Get Article",
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -145,20 +146,18 @@ fun AOTD(navController: NavController) {
                     enter = scaleIn(),
                     exit = scaleOut()
                 ) {
-                    FloatingActionButton(
+                    VengFab(
+                        modifier = Modifier.padding(bottom = scrollBottomInset),
                         onClick = {
                             coroutineScope.launch {
                                 scrollState.animateScrollTo(0)
                             }
                         },
-                        shape = CircleShape,
-                        containerColor = MaterialTheme.colorScheme.secondary,
-                        contentColor = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.shadow(10.dp, CircleShape)
                     ) {
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowUp,
-                            contentDescription = "Up"
+                            contentDescription = "Up",
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }
@@ -167,11 +166,12 @@ fun AOTD(navController: NavController) {
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
+                    .verticalScroll(scrollState)
                     .padding(horizontal = 8.dp, vertical = 8.dp)
-                    .verticalScroll(scrollState),
-                verticalArrangement = Arrangement.Top
+                    .padding(bottom = scrollBottomInset + 16.dp),
+                verticalArrangement = Arrangement.Top,
             ) {
                 Surface(
                     shape = RoundedCornerShape(12.dp),

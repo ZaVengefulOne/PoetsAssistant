@@ -11,7 +11,7 @@
     <string name="press_the_button">Нажмите на кнопку, чтобы отобразить случайную статью</string>
     <string name="topic_name">Название статьи</string>
     <string name="first_words">Первые строки статьи</string>
-    <string name="enter_rhyming_word">Введите слово для подбора рифмы:</string>
+    <string name="enter_rhyming_word">Введите слово:</string>
     <string name="error_name_not_found">Ошибка! Название статьи не найдено!</string>
     <string name="error_topic_not_found">Ошибка! Статья не найдена!</string>
     <string name="aboutApp"> Это приложение было создано во время обучения на четвёртом курсе в университете РТУ МИРЭА. \n \nОно предназначенно для подбора рифм, ознакомления с информацией о стихосложении и рифмовке, а также может выполнять функцию заметок, с возможностью выделения рифмующихся слогов в словах. \n \nНесмотря на всё вышеперечисленное, главная функция приложения - поиск вдохновения :) \n \nРазработчик: ZaVengefulOne \n</string>
@@ -20,7 +20,7 @@
     <string name="noteDeletion">Удаление заметок</string>
     <string name="noteDeletionRUSure">Вы уверены, что хотите очистить заметки?</string>
     <string name="newNote">Новая заметка</string>
-    <string name="enter_note_text">Введите текст заметки...</string>
+    <string name="enter_note_text">Введите текст заметки…</string>
     <string name="that_font">Выбрать этот шрифт</string>
     <string name="this_font">Или этот</string>
     <string name="about_app_button">"О приложении: "</string>
@@ -28,5 +28,10 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="cancel">Отмена</string>
-    <string name="vowels_amount">В слове, которое вы ввели, %1$s гласных.\nВыберите, на какую поставить ударение (справа налево).</string>
+    <string name="vowels_amount">В слове, которое вы ввели, %1$s гласных.\nВыберите, на какую поставить ударение.</string>
+    <string name="rhyme_stress_info_title">Источник</string>
+    <string name="rhyme_stress_info_message">Большое спасибо за рифмы сайту rifmovka.ru!</string>
+    <string name="rhyme_stress_info_content_description">Информация об ударении</string>
+    <string name="rhyme_load_error">Не удалось загрузить рифмы. Проверьте интернет и попробуйте снова.</string>
+    <string name="ok">ОК</string>
 </resources>

@@ -3,35 +3,30 @@ package com.example.composejoyride.ui.screens
 //noinspection UsingMaterialAndMaterial3Libraries
 //noinspection UsingMaterialAndMaterial3Libraries
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,19 +36,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.composejoyride.R
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
-import com.example.composejoyride.ui.theme.Dimens
-import com.example.composejoyride.ui.theme.composables.AlertDialog
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.AlertDialog
+import com.example.composejoyride.ui.theme.composables.VengCard
+import com.example.composejoyride.ui.theme.composables.VengIconButton
 import com.example.composejoyride.ui.theme.composables.VengTopAppBar
+import com.example.composejoyride.ui.theme.liquid.LocalScrollBottomInset
 import com.example.composejoyride.ui.viewModels.NoteViewModel
 import com.example.composejoyride.ui.viewModels.NotesViewModel
 
+private val NoteCardWidth = 152.dp
+private val NoteCardHeight = 128.dp
+private val NoteGridCellSize = 164.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SuspiciousIndentation", "UnrememberedGetBackStackEntry")
@@ -63,9 +64,10 @@ fun Notes(navController: NavController) {
     val noteViewModel: NoteViewModel = sharedViewModel(navController)
 
     val allNotes by notesViewModel.allNotes.collectAsState()
+    val scrollBottomInset = LocalScrollBottomInset.current
+    val colorScheme = MaterialTheme.colorScheme
 
     val openDeleteDialog = remember { mutableStateOf(false) }
-
 
     when {
         openDeleteDialog.value -> {
@@ -77,112 +79,104 @@ fun Notes(navController: NavController) {
                 },
                 dialogTitle = stringResource(R.string.noteDeletion),
                 dialogText = stringResource(R.string.noteDeletionRUSure),
-                icon = Icons.Default.DeleteForever
+                icon = Icons.Default.DeleteForever,
             )
         }
     }
     Scaffold(
         topBar = {
             VengTopAppBar(
-                navigationAction = {navController.navigate(NoteGraph.MAIN_SCREEN)},
+                navigationAction = { navController.navigate(NoteGraph.MAIN_SCREEN) },
                 title = "Заметки",
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
             )
-        }
+        },
     ) { padding ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+        ) {
             LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Adaptive(128.dp),
+                columns = StaggeredGridCells.FixedSize(NoteGridCellSize),
+//                horizontalItemSpacing = 10.dp,
+                verticalItemSpacing = 10.dp,
                 contentPadding = PaddingValues(
                     start = 12.dp,
                     top = 16.dp,
                     end = 12.dp,
-                    bottom = 16.dp
-                ), modifier = Modifier.weight(0.9f)
+                    bottom = 12.dp,
+                ),
+                modifier = Modifier.weight(1f),
             ) {
-                items(allNotes) { index ->
-                    Card(
+                items(allNotes, key = { it.id }) { note ->
+                    VengCard(
                         modifier = Modifier
-                            .padding(4.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                noteViewModel.setNote(index.id)
-                                navController.navigate(NoteGraph.NOTE_SCREEN)
-                            },
-                        shape = CardDefaults.elevatedShape,
-                        elevation = CardDefaults.cardElevation(12.dp),
-                        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+                            .padding(2.dp)
+                            .size(width = NoteCardWidth, height = NoteCardHeight),
+                        onClick = {
+                            noteViewModel.setNote(note.id)
+                            navController.navigate(NoteGraph.NOTE_SCREEN)
+                        },
+                        shape = RoundedCornerShape(20.dp),
+                        contentPadding = 14.dp,
                     ) {
-                        Row(
-                            Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
                         ) {
-
                             Icon(
-                                Icons.AutoMirrored.Filled.Notes,
-                                contentDescription = "Note",
-                                tint = MaterialTheme.colorScheme.tertiary,
-                                modifier = Modifier.padding(Dimens.paddingLarge)
+                                imageVector = Icons.AutoMirrored.Filled.Notes,
+                                contentDescription = null,
+                                tint = colorScheme.primary,
+                                modifier = Modifier.size(36.dp),
                             )
-
+                            Spacer(modifier = Modifier.height(10.dp))
                             Text(
-                                text = index.note_name,
-                                fontSize = 18.sp,
+                                text = note.note_name,
+                                fontSize = 16.sp,
+                                lineHeight = 20.sp,
                                 fontFamily = TheFont,
-                                color = MaterialTheme.colorScheme.tertiary,
+                                color = colorScheme.tertiary,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(16.dp)
+                                maxLines = 3,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.fillMaxWidth(),
                             )
-
                         }
                     }
                 }
             }
             Row(
                 modifier = Modifier
-                    .align(Alignment.End)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .fillMaxWidth()
+                    .padding(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 8.dp,
+                        bottom = scrollBottomInset + 12.dp,
+                    ),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                OutlinedIconButton(
+                VengIconButton(
                     onClick = {
                         noteViewModel.createAndOpenNewNote()
                         navController.navigate(NoteGraph.NOTE_SCREEN)
                     },
-                    modifier = Modifier
-                        .size(75.dp)
-                        .padding(10.dp),
-                    shape = CircleShape,
-                    border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.tertiary),
-                ) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = "Add Note",
-                        tint = MaterialTheme.colorScheme.tertiary
-                    )
-                }
-                OutlinedIconButton(
-                    onClick = {
-                        openDeleteDialog.value = true
-                    },
-                    modifier = Modifier
-                        .size(75.dp)
-                        .padding(10.dp),
-                    shape = CircleShape,
-                    border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.tertiary)
-                ) {
-                    Icon(
-                        Icons.Default.DeleteForever,
-                        contentDescription = "Clear Notes",
-                        tint = MaterialTheme.colorScheme.tertiary
-                    )
-                }
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Note",
+                    size = 68.dp,
+                )
+                VengIconButton(
+                    onClick = { openDeleteDialog.value = true },
+                    imageVector = Icons.Default.DeleteForever,
+                    contentDescription = "Clear Notes",
+                    size = 68.dp,
+                    contentColor = colorScheme.error,
+                )
             }
         }
     }
 }
-
-

@@ -33,6 +33,7 @@ import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
 import com.example.composejoyride.ui.theme.composables.VengTopAppBar
+import com.example.composejoyride.ui.theme.liquid.LocalScrollBottomInset
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 
@@ -45,6 +46,7 @@ fun ProfileScreen(
     val textColor = MaterialTheme.colorScheme.tertiary
     val user = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
+    val scrollBottomInset = LocalScrollBottomInset.current
     Scaffold (
         topBar = {
             VengTopAppBar(
@@ -56,9 +58,10 @@ fun ProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(padding)
+            .padding(bottom = scrollBottomInset + 16.dp),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         Text(

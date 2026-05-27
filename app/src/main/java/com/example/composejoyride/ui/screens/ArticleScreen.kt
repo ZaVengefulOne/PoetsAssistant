@@ -37,17 +37,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.draw.shadow
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengFab
 import com.example.composejoyride.ui.theme.composables.VengTopAppBar
+import com.example.composejoyride.ui.theme.liquid.LocalScrollBottomInset
 import com.example.composejoyride.ui.viewModels.ArticleViewModel
 import kotlinx.coroutines.launch
 
@@ -62,6 +61,7 @@ fun ArticleScreen(navController: NavController) {
 
 
     val textColor = MaterialTheme.colorScheme.tertiary
+    val scrollBottomInset = LocalScrollBottomInset.current
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -97,20 +97,18 @@ fun ArticleScreen(navController: NavController) {
                 enter = scaleIn(),
                 exit = scaleOut()
             ) {
-                FloatingActionButton(
+                VengFab(
+                    modifier = Modifier.padding(bottom = scrollBottomInset),
                     onClick = {
                         coroutineScope.launch {
                             scrollState.animateScrollTo(0)
                         }
                     },
-                    shape = CircleShape,
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = MaterialTheme.colorScheme.tertiary,
-                    modifier = Modifier.shadow(10.dp, CircleShape)
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Up"
+                        contentDescription = "Up",
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 }
             }
@@ -119,11 +117,12 @@ fun ArticleScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
+                .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(scrollState)
                 .padding(horizontal = 8.dp, vertical = 8.dp)
-                .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.Top
+                .padding(bottom = scrollBottomInset + 16.dp),
+            verticalArrangement = Arrangement.Top,
         ) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
@@ -132,7 +131,7 @@ fun ArticleScreen(navController: NavController) {
             ) {
                 Text(
                     text = articleText,
-                    textAlign = TextAlign.Justify,
+                    textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         lineHeight = 24.sp
                     ),

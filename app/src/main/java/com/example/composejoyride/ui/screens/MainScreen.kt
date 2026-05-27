@@ -38,7 +38,6 @@ import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.LocalTheme
 import com.example.composejoyride.ui.theme.TheFont
 import com.example.composejoyride.ui.theme.composables.VengButton
-import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 
 @Composable
 fun MainScreen(navController: NavController, preferences: SharedPreferences) {
