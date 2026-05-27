@@ -56,6 +56,7 @@ import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.example.composejoyride.ui.viewModels.AOTDViewModel
 import com.example.composejoyride.ui.viewModels.ArticleViewModel
 import kotlinx.coroutines.launch
@@ -127,27 +128,14 @@ fun AOTD(navController: NavController) {
                     enter = slideInVertically(initialOffsetY = { -it }),
                     exit = slideOutVertically(targetOffsetY = { -it })
                 ) {
-                    TopAppBar(
-                        title = {
-                            Text(
-                                text = articleName,
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontSize = 22.sp
-                                ),
-                                color = buttonText,
-                            )
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = {
-                                viewModel.getRandomArticle()
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Refresh,
-                                    contentDescription = "Перезапуск"
-                                )
-                            }
-                        }
+                    VengTopAppBar(
+                        navigationAction = { viewModel.getRandomArticle() },
+                        title = articleName,
+                        navigationIcon = Icons.Filled.Refresh,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 22.sp
+                        )
                     )
                 }
             },

@@ -59,11 +59,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.composejoyride.R
+import com.example.composejoyride.data.Interactors.ParseInteractor.Companion.SEARCH_KEY
 import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.example.composejoyride.ui.viewModels.ArticleViewModel
 import com.example.composejoyride.ui.viewModels.LibraryViewModel
 
@@ -99,7 +101,7 @@ fun Library(
     val filteredArticleList = rememberSaveable { mutableStateOf(articles) }
     val localItems = rememberSaveable {
         mutableStateOf(
-            preferences.getStringSet(Constants.SEARCH_KEY, mutableSetOf())?.toMutableSet()
+            preferences.getStringSet(SEARCH_KEY, mutableSetOf())?.toMutableSet()
                 ?: mutableSetOf()
         )
     }
@@ -130,27 +132,10 @@ fun Library(
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Библиотека статей",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontFamily = TheFont,
-                        color = MaterialTheme.colorScheme.tertiary,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigate(NoteGraph.MAIN_SCREEN)
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад"
-                        )
-                    }
-
-                }
+            VengTopAppBar(
+                navigationAction = {navController.navigate(NoteGraph.MAIN_SCREEN)},
+                title = "Библиотека статей",
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack
             )
         }
     ) { padding ->
@@ -205,7 +190,7 @@ fun Library(
                                     viewModel.saveSearchHistory(searchText.value, preferences)
                                     localItems.value =
                                         preferences.getStringSet(
-                                            Constants.SEARCH_KEY,
+                                            SEARCH_KEY,
                                             mutableSetOf()
                                         )
                                             ?.toMutableSet()

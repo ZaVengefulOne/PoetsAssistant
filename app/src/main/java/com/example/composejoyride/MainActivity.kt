@@ -33,28 +33,30 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
         setContent {
             val sharedPrefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE)
-                ComposeJoyrideTheme {
-                    val navController = rememberNavController()
-                    val isBottomBarVisible = remember { mutableStateOf(true) }
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = colorScheme.background
-                    ) {
-                        Scaffold(
-                            bottomBar = {
-                                BottomNavigationBar(navController = navController,
-                                    visibility = isBottomBarVisible)
-                            }, content = { padding ->
-                                NavHostContainer(
-                                    navController = navController,
-                                    padding = padding,
-                                    preferences = sharedPrefs,
-                                    bottomBarVisibility = isBottomBarVisible
-                                )
-                            }
-                        )
-                    }
+            ComposeJoyrideTheme {
+                val navController = rememberNavController()
+                val isBottomBarVisible = remember { mutableStateOf(true) }
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = colorScheme.background
+                ) {
+                    Scaffold(
+                        bottomBar = {
+                            BottomNavigationBar(
+                                navController = navController,
+                                visibility = isBottomBarVisible
+                            )
+                        }, content = { padding ->
+                            NavHostContainer(
+                                navController = navController,
+                                padding = padding,
+                                preferences = sharedPrefs,
+                                bottomBarVisibility = isBottomBarVisible
+                            )
+                        }
+                    )
                 }
+            }
 
 
         }

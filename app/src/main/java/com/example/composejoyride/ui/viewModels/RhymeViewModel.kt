@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,6 +46,6 @@ class RhymeViewModel @Inject constructor(private val repository: RhymeRepository
         val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clipData: ClipData = ClipData.newPlainText("text", rhymeItem)
         clipboardManager.setPrimaryClip(clipData)
-        Toast.makeText(context, "Скопировано в буфер обмена!", Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, "Скопировано в буфер обмена!", Toast.LENGTH_LONG).show()
     }
 }

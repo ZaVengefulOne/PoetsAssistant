@@ -1,7 +1,7 @@
 package com.example.composejoyride.ui.screens
 
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,43 +9,54 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Abc
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.ContactPage
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.composejoyride.R
 import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.data.utils.NoteGraph
+import com.example.composejoyride.data.utils.VengButtonType
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.LocalTheme
 import com.example.composejoyride.ui.theme.TheFont
-import com.google.firebase.auth.FirebaseAuth
+import com.example.composejoyride.ui.theme.composables.VengButton
+import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 
 @Composable
-fun Main(navController: NavController, preferences: SharedPreferences) {
+fun MainScreen(navController: NavController, preferences: SharedPreferences) {
+    val paddingMain = 40.dp
+    val spacerTop = 48.dp
+    val paddingText = 24.dp
 
+    val buttonWidth = 120.dp
     val buttonColor = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
     val buttonText = MaterialTheme.colorScheme.tertiary
-    LocalTheme.value = preferences.getBoolean(Constants.EDIT_KEY, false)
+
+    LaunchedEffect(Unit) {
+        LocalTheme.value = preferences.getBoolean(Constants.EDIT_KEY, false)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 40.dp),
+            .padding(horizontal = paddingMain),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     )
@@ -53,7 +64,7 @@ fun Main(navController: NavController, preferences: SharedPreferences) {
         Text(
             text = stringResource(id = R.string.app_name),
             modifier = Modifier
-                .padding(top = 24.dp, bottom = 24.dp)
+                .padding(top = paddingText, bottom = paddingText)
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth(),
             color = MaterialTheme.colorScheme.tertiary,
@@ -65,117 +76,64 @@ fun Main(navController: NavController, preferences: SharedPreferences) {
             )
         )
 
-        Log.d("VENGEFUL", FirebaseAuth.getInstance().currentUser?.email.toString())
-
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(spacerTop))
 
         Column {
-            Button(
+
+            VengButton(
                 onClick = { navController.navigate(NoteGraph.AOTD_SCREEN) },
-                colors = buttonColor,
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(vertical = Dimens.paddingSmall)
-            ) {
-                Icon(
-                    Icons.Filled.ContactPage,
-                    contentDescription = "AOTD Button",
-                    tint = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    text = stringResource(id = R.string.aotd),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = Dimens.paddingLarge),
-                    fontFamily = TheFont,
-                    color = buttonText,
-                    fontSize = 22.sp
-                )
-            }
+                modifier = Modifier.fillMaxWidth(),
+                buttonColor = buttonColor,
+                textColor = buttonText,
+                image = Icons.Filled.ContactPage,
+                text = stringResource(id = R.string.aotd),
+                buttonType = VengButtonType.Liquid
+            )
 
             Spacer(modifier = Modifier.height(Dimens.paddingSpacer))
 
-            Button(
+            VengButton(
                 onClick = { navController.navigate(NoteGraph.GENERATOR_SCREEN) },
-                colors = buttonColor,
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(vertical = 4.dp)
-            ) {
-                Icon(
-                    Icons.Filled.Abc,
-                    contentDescription = "Rhyme Button",
-                    tint = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    text = stringResource(id = R.string.generator),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = Dimens.paddingLarge),
-                    fontFamily = TheFont,
-                    color = buttonText,
-                    fontSize = 22.sp
-                )
-            }
+                modifier = Modifier.fillMaxWidth(),
+                buttonColor = buttonColor,
+                textColor = buttonText,
+                image = Icons.Filled.Abc,
+                text = stringResource(id = R.string.generator),
+                buttonType = VengButtonType.Liquid
+            )
 
             Spacer(modifier = Modifier.height(Dimens.paddingSpacer))
 
-            Button(
+            VengButton(
                 onClick = { navController.navigate(NoteGraph.LIBRARY_SCREEN) },
-                colors = buttonColor,
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(vertical = Dimens.paddingSmall)
-            ) {
-                Icon(
-                    Icons.Filled.AutoStories,
-                    contentDescription = "Library Button",
-                    tint = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    text = stringResource(id = R.string.library),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = Dimens.paddingLarge),
-                    fontFamily = TheFont,
-                    color = buttonText,
-                    fontSize = 22.sp
-                )
-            }
+                modifier = Modifier.fillMaxWidth(),
+                buttonColor = buttonColor,
+                textColor = buttonText,
+                image = Icons.Filled.AutoStories,
+                text = stringResource(id = R.string.library),
+                buttonType = VengButtonType.Liquid
+            )
 
             Spacer(modifier = Modifier.height(Dimens.paddingSpacer))
 
-            Button(
+            VengButton(
                 onClick = { navController.navigate(NoteGraph.SETTINGS_SCREEN) },
-                colors = buttonColor,
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(vertical = Dimens.paddingSmall)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.baseline_settings_24),
-                    contentDescription = "Settings Button",
-                    tint = MaterialTheme.colorScheme.tertiary
-                )
-                Text(
-                    text = stringResource(id = R.string.settings),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = Dimens.paddingLarge),
-                    fontFamily = TheFont,
-                    color = buttonText,
-                    fontSize = 22.sp
-                )
-            }
-
+                modifier = Modifier.fillMaxWidth(),
+                buttonColor = buttonColor,
+                textColor = buttonText,
+                icon = R.drawable.baseline_settings_24,
+                text = stringResource(id = R.string.settings),
+                buttonType = VengButtonType.Liquid
+            )
         }
     }
+}
+
+@Preview
+@Composable
+fun MainScreenPreview() {
+    val navController = rememberNavController()
+    val localContext = LocalContext.current
+    val preferences = localContext.getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE)
+    MainScreen(navController, preferences)
 }

@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 
@@ -46,34 +47,17 @@ fun ProfileScreen(
     val context = LocalContext.current
     Scaffold (
         topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "Аккаунт",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontFamily = TheFont,
-                    color = MaterialTheme.colorScheme.tertiary,
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = {
-                        navController.navigate(NoteGraph.MAIN_SCREEN)
-                }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Назад"
-                    )
-                }
-
-            }
-        )
+            VengTopAppBar(
+                navigationAction = {navController.navigate(NoteGraph.MAIN_SCREEN)},
+                title = "Аккаунт",
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack
+            )
     }) { padding ->
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

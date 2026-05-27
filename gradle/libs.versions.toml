@@ -9,11 +9,12 @@ espressoCore = "3.6.1"
 firebaseBom = "33.14.0"
 firebaseUiAuth = "8.0.2"
 foundation = "1.8.2"
-hiltCompiler = "2.55"
+hiltCompiler = "2.59.2"
 hiltNavigationCompose = "1.2.0"
 jsoup = "1.14.2"
 junit = "4.13.2"
 junitVersion = "1.2.1"
+kotlinMetadataJvm = "2.3.0"
 kotlinxCoroutinesTest = "1.10.0"
 lifecycleRuntimeKtx = "2.8.7"
 lifecycleViewmodelAndroid = "2.8.7"
@@ -24,13 +25,17 @@ mockk = "1.14.2"
 mockkAgent = "1.14.2"
 mockkAndroid = "1.14.2"
 navigationCompose = "2.8.9"
+richeditorCompose = "1.0.0-rc14"
 roomRuntime = "2.7.1"
 runtimeLivedata = "1.8.0"
 workRuntimeKtx = "2.10.1"
 workRuntimeKtxVersion = "2.8.1"
-kotlin = "2.0.21"
+kotlin = "2.3.21"
 constraintlayout = "2.2.1"
 firebaseFirestoreKtx = "25.1.4"
+backdrop = "2.0.0-alpha03"
+capsule = "2.1.3"
+shapesAndroid = "1.2.0"
 
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -55,6 +60,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltC
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { module = "junit:junit", version.ref = "junit" }
+kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlinMetadataJvm" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 lifecycle-viewmodel-android = { module = "androidx.lifecycle:lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
@@ -64,6 +70,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockkAgent" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
@@ -77,6 +84,9 @@ ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+backdrop = { module = "io.github.kyant0:backdrop", version.ref = "backdrop" }
+capsule = { module = "io.github.kyant0:capsule", version.ref = "capsule" }
+shapes-android = { module = "io.github.kyant0:shapes-android", version.ref = "shapesAndroid" }
 
 [plugins]
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

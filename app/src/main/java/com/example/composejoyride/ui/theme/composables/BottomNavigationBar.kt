@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.data.utils.NoteGraph
+import com.example.composejoyride.ui.theme.liquid.LiquidBottomBar
 import com.example.composejoyride.ui.viewModels.SettingsViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -82,13 +83,12 @@ fun BottomNavigationBar(navController: NavHostController, visibility: MutableSta
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
-                //Text("isAdmin = $isAdmin")
                 navItems.forEach { navItem ->
                     BottomNavigationItem(
                         selected = currentRoute == navItem.route,
                         onClick = { navController.navigate(navItem.route) },
                         icon = { Icon(navItem.icon, contentDescription = navItem.label) },
-                        label = { Text(navItem.label, fontSize = 10.sp) },
+//                        label = { Text(navItem.label, fontSize = 10.sp) },
                         alwaysShowLabel = false
                     )
                 }

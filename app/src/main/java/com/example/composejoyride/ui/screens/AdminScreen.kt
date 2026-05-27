@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -43,6 +44,7 @@ import com.example.composejoyride.data.utils.formatTimestamp
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.TheFont
 import com.example.composejoyride.ui.theme.composables.InfoRow
+import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.example.composejoyride.ui.viewModels.SettingsViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -77,32 +79,11 @@ fun AdminScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        "Админ-панель",
-                        fontFamily = TheFont,
-                        fontSize = 24.sp,
-                        color = textColor
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigate(NoteGraph.MAIN_SCREEN) {
-                            popUpTo(0)
-                        }
-                    }) {
-                        androidx.compose.material3.Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад",
-                            tint = textColor
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
+            VengTopAppBar(
+                navigationAction = {navController.navigate(NoteGraph.MAIN_SCREEN) { popUpTo(0) }},
+                title = "Админ-панель",
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack
                 )
-            )
         }
     ) { padding ->
         LazyColumn(
@@ -133,7 +114,7 @@ fun AdminScreen(
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    androidx.compose.material3.Icon(
+                    Icon(
                         Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = null
                     )

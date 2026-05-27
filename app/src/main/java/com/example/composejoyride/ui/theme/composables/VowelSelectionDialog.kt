@@ -1,5 +1,6 @@
 package com.example.composejoyride.ui.theme.composables
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,7 +35,15 @@ fun VowelSelectionDialog(
 
     val vowelPositions = word.withIndex()
         .filter { it.value in Constants.vowels }
-        .map { it.index }.reversed()
+        .map { it.index }
+//        .reversed()
+
+    val usedVowels = vowelPositions.reversed()
+
+    LaunchedEffect(Unit) {
+        Log.d("VENGEFUL", vowelPositions.toString())
+        Log.d("VENGEFUL", usedVowels.toString())
+    }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(
@@ -66,7 +76,7 @@ fun VowelSelectionDialog(
                     itemsIndexed(vowelPositions) { index, position ->
                         Button(
                             onClick = {
-                                onVowelSelected(index)
+                                onVowelSelected(usedVowels[index]) //TODO: risky
                                 onDismissRequest()
                             },
                             shape = MaterialTheme.shapes.small,

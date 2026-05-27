@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -12,12 +14,12 @@ plugins {
 
 android {
     namespace = "com.example.composejoyride"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.composejoyride"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -26,16 +28,19 @@ android {
             useSupportLibrary = true
         }
 
+        //noinspection WrongGradleMethod
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
 
+        //noinspection WrongGradleMethod
         ktlint {
             version.set("0.50.0") // Можно явно указать версию CLI
             android.set(true)     // Включает правила для Android
             outputColorName.set("RED")
         }
 
+        //noinspection WrongGradleMethod
         detekt {
             buildUponDefaultConfig = true
             allRules = false
@@ -56,8 +61,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
     }
     buildFeatures {
         compose = true
@@ -74,7 +81,7 @@ android {
 allprojects {
     configurations.all {
         resolutionStrategy {
-            force( "org.xerial:sqlite-jdbc:3.34.0")
+            force("org.xerial:sqlite-jdbc:3.34.0")
         }
     }
 }
@@ -91,9 +98,10 @@ dependencies {
     implementation(libs.work.runtime.ktx)
     implementation(libs.firebase.firestore.ktx)
     ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata.jvm)
 
     implementation(libs.lifecycle.viewmodel.android)
-    
+
     //Room
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
@@ -105,13 +113,17 @@ dependencies {
 
     // Network
     implementation(libs.coil.compose)
-    implementation (libs.jsoup)
+    implementation(libs.jsoup)
+
+    // Liquid Glass
+    implementation(libs.backdrop)
+    implementation(libs.capsule)
+    implementation(libs.shapes.android)
 
     //Misc
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
-
 
 
     //UI
@@ -121,7 +133,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material)
-    implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc12")
+    implementation(libs.richeditor.compose)
     implementation(libs.google.material)
     implementation(libs.androidx.foundation)
 

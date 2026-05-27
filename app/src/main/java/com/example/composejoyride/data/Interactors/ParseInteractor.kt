@@ -1,5 +1,6 @@
 package com.example.composejoyride.data.Interactors
 
+import android.util.Log
 import com.example.composejoyride.data.Interactors.interfaces.IParseInteractor
 import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.di.models.Article
@@ -9,7 +10,7 @@ import org.jsoup.Jsoup
 class ParseInteractor : IParseInteractor {
     override suspend fun getRhymes(input: Rhyme): List<String> {
         val document =
-            Jsoup.connect(Constants.BASE_RHYMES_URL + input.text + "/${input.stress}")
+            Jsoup.connect(BASE_RHYMES_URL + input.text + "/${input.stress}")
                 .get()
         val rhyme = document.getElementsByClass("riLi")
         return rhyme.map { it.text().toString() }
@@ -17,7 +18,7 @@ class ParseInteractor : IParseInteractor {
 
     private fun getLinks(): List<String> {
         val document =
-            Jsoup.connect(Constants.BASE_ARTICLES_URL)
+            Jsoup.connect(BASE_ARTICLES_URL)
                 .get()
         val links = document.select("h3 > a")
         return links.map { it.attr("href").toString() }.dropLast(1)
@@ -36,7 +37,7 @@ class ParseInteractor : IParseInteractor {
 
     override suspend fun getArticles(): List<Article> {
         val document =
-            Jsoup.connect(Constants.BASE_ARTICLES_URL)
+            Jsoup.connect(BASE_ARTICLES_URL)
                 .get()
         val articles = document.select("h3")
         val links = document.select("h3 > a")
@@ -52,5 +53,9 @@ class ParseInteractor : IParseInteractor {
         return Article(articleTitle, articleText, url)
     }
 
-
+    companion object {
+        const val SEARCH_KEY = "search_key"
+        const val BASE_RHYMES_URL = "https://rifme.net/r/"
+        const val BASE_ARTICLES_URL = "https://nsaturnia.ru/kak-pisat-stixi/"
+    }
 }

@@ -57,6 +57,7 @@ import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.composables.VowelSelectionDialog
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.example.composejoyride.ui.viewModels.RhymeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,6 +71,8 @@ fun RhymeScreen(navController: NavController, isBottomBarVisible: MutableState<B
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
+    val textColor = MaterialTheme.colorScheme.tertiary
+
     var showDialog by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf<Int?>(null) }
 
@@ -78,27 +81,10 @@ fun RhymeScreen(navController: NavController, isBottomBarVisible: MutableState<B
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Генератор рифм",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontFamily = TheFont,
-                        color = MaterialTheme.colorScheme.tertiary,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigate(NoteGraph.MAIN_SCREEN)
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад"
-                        )
-                    }
-
-                }
+            VengTopAppBar(
+                navigationAction = {navController.navigate(NoteGraph.MAIN_SCREEN)},
+                title = "Генератор Рифм",
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack
             )
         }
     ) { padding ->
@@ -119,16 +105,16 @@ fun RhymeScreen(navController: NavController, isBottomBarVisible: MutableState<B
                 placeholder = {
                     Text(
                         "Поиск...",
-                        color = Color.Black,
+                        color = textColor,
                         fontFamily = TheFont
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Black,
-                    focusedIndicatorColor = Color.Black,
-                    focusedPlaceholderColor = Color.Black,
-                    focusedTextColor = Color.Black,
-                    focusedTrailingIconColor = Color.Black,
+                    unfocusedIndicatorColor = textColor,
+                    focusedIndicatorColor = textColor,
+                    focusedPlaceholderColor = textColor,
+                    focusedTextColor = textColor,
+                    focusedTrailingIconColor = textColor,
                     unfocusedContainerColor = MaterialTheme.colorScheme.background,
                     focusedContainerColor = MaterialTheme.colorScheme.background
                 ),
@@ -155,7 +141,7 @@ fun RhymeScreen(navController: NavController, isBottomBarVisible: MutableState<B
                             isBottomBarVisible.value = true
                             keyboardController?.hide()
                         },
-                        tint = Color.Black
+                        tint = textColor
                     )
                 }
             )

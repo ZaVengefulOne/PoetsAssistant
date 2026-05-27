@@ -32,6 +32,7 @@ import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +48,7 @@ import androidx.core.content.edit
 import androidx.navigation.NavController
 import com.example.composejoyride.R
 import com.example.composejoyride.data.utils.Constants
+import com.example.composejoyride.data.utils.Constants.APP_VERSION
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
@@ -71,6 +73,14 @@ fun Settings(navController: NavController, preferences: SharedPreferences) {
     Scaffold(
         topBar = {
             TopAppBar(
+                colors = TopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    scrolledContainerColor = MaterialTheme.colorScheme.secondary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.tertiary,
+                    titleContentColor = MaterialTheme.colorScheme.secondary,
+                    actionIconContentColor = MaterialTheme.colorScheme.secondary,
+                    subtitleContentColor = MaterialTheme.colorScheme.secondary
+                ),
                 title = {
                     Text(
                         text = if (isInfoOpen.value) "О приложении" else "Настройки",
@@ -221,7 +231,7 @@ fun Settings(navController: NavController, preferences: SharedPreferences) {
                         modifier = Modifier.width(buttonWidth)
                     ) {
                         Text(
-                            text = "Тык сюда",
+                            text = stringResource(R.string.clickHere),
                             fontFamily = selectedFont,
                             color = MaterialTheme.colorScheme.tertiary
                         )
@@ -230,7 +240,6 @@ fun Settings(navController: NavController, preferences: SharedPreferences) {
 
 
             } else {
-                // Экран "О приложении"
                 Text(
                     text = stringResource(id = R.string.aboutApp),
                     textAlign = TextAlign.Justify,
@@ -239,6 +248,11 @@ fun Settings(navController: NavController, preferences: SharedPreferences) {
                     color = MaterialTheme.colorScheme.tertiary
                 )
 
+                Text(text = stringResource(id = R.string.appVersion, APP_VERSION),
+                    textAlign = TextAlign.Justify,
+                    fontFamily = selectedFont,
+                    modifier = Modifier.padding(Dimens.paddingMedium),
+                    color = MaterialTheme.colorScheme.tertiary)
                 Spacer(modifier = Modifier.weight(1f))
 
             }

@@ -18,7 +18,7 @@ import com.example.composejoyride.ui.screens.AdminScreen
 import com.example.composejoyride.ui.screens.ArticleScreen
 import com.example.composejoyride.ui.screens.AuthScreen
 import com.example.composejoyride.ui.screens.Library
-import com.example.composejoyride.ui.screens.Main
+import com.example.composejoyride.ui.screens.MainScreen
 import com.example.composejoyride.ui.screens.Note
 import com.example.composejoyride.ui.screens.Notes
 import com.example.composejoyride.ui.screens.ProfileScreen
@@ -50,7 +50,7 @@ fun NavHostContainer(
             route = NoteGraph.MAIN
         ) {
             composable(NoteGraph.MAIN_SCREEN) {
-                Main(navController, preferences)
+                MainScreen(navController, preferences)
             }
 
             composable(NoteGraph.AUTH_SCREEN) {

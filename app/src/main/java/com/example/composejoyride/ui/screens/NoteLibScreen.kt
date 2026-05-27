@@ -50,6 +50,7 @@ import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.composables.AlertDialog
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.example.composejoyride.ui.viewModels.NoteViewModel
 import com.example.composejoyride.ui.viewModels.NotesViewModel
 
@@ -82,27 +83,10 @@ fun Notes(navController: NavController) {
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Заметки",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontFamily = TheFont,
-                        color = MaterialTheme.colorScheme.tertiary,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        navController.navigate(NoteGraph.MAIN_SCREEN)
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад"
-                        )
-                    }
-
-                }
+            VengTopAppBar(
+                navigationAction = {navController.navigate(NoteGraph.MAIN_SCREEN)},
+                title = "Заметки",
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack
             )
         }
     ) { padding ->

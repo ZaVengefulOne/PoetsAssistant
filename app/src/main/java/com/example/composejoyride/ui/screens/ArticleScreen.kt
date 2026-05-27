@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.shadow
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.example.composejoyride.ui.viewModels.ArticleViewModel
 import kotlinx.coroutines.launch
 
@@ -80,26 +81,13 @@ fun ArticleScreen(navController: NavController) {
                 enter = slideInVertically(initialOffsetY = { -it }),
                 exit = slideOutVertically(targetOffsetY = { -it })
             ) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = articleTitle,
-                            style = MaterialTheme.typography.titleLarge,
-                            fontFamily = TheFont,
-                            color = textColor,
-                        )
+                VengTopAppBar(
+                    navigationAction = {
+                        navController.navigate(NoteGraph.LIBRARY_SCREEN)
+                        articleViewModel.articleDrop()
                     },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            navController.navigate(NoteGraph.LIBRARY_SCREEN)
-                            articleViewModel.articleDrop()
-                        }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Назад"
-                            )
-                        }
-                    }
+                    title = articleTitle,
+                    navigationIcon = Icons.AutoMirrored.Filled.ArrowBack
                 )
             }
         },

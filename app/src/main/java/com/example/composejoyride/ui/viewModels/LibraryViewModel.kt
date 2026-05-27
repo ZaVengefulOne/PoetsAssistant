@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.composejoyride.data.Interactors.ParseInteractor.Companion.SEARCH_KEY
 import com.example.composejoyride.data.repositories.ArticlesRepository
 import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.data.utils.toArticles
@@ -64,7 +65,7 @@ class LibraryViewModel @Inject constructor(private val repository: ArticlesRepos
 
     fun saveSearchHistory(query: String, sharedPreferences: SharedPreferences) {
         val historySet =
-            sharedPreferences.getStringSet(Constants.SEARCH_KEY, mutableSetOf())?.toMutableSet()
+            sharedPreferences.getStringSet(SEARCH_KEY, mutableSetOf())?.toMutableSet()
                 ?: mutableSetOf()
         if (historySet.contains(query)) {
             historySet.remove(query)
@@ -78,7 +79,7 @@ class LibraryViewModel @Inject constructor(private val repository: ArticlesRepos
             }
         }
         sharedPreferences.edit {
-            putStringSet(Constants.SEARCH_KEY, historySet)
+            putStringSet(SEARCH_KEY, historySet)
         }
     }
 }
