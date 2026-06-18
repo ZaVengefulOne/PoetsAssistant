@@ -19,12 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
         setContent {
-            val sharedPrefs = getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE)
+            val sharedPrefs = getSharedPreferences(Constants.PREFERENCES_MAIN, MODE_PRIVATE)
             ComposeJoyrideTheme {
                 val navController = rememberNavController()
                 val isBottomBarVisible = remember { mutableStateOf(true) }

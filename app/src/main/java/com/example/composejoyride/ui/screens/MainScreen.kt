@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Abc
 import androidx.compose.material.icons.filled.AutoStories
@@ -34,10 +32,12 @@ import com.example.composejoyride.R
 import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.VengButtonType
+import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.LocalTheme
 import com.example.composejoyride.ui.theme.TheFont
 import com.example.composejoyride.ui.theme.composables.VengButton
+import com.example.composejoyride.ui.viewModels.MainViewModel
 
 @Composable
 fun MainScreen(navController: NavController, preferences: SharedPreferences) {
@@ -45,12 +45,14 @@ fun MainScreen(navController: NavController, preferences: SharedPreferences) {
     val spacerTop = 48.dp
     val paddingText = 24.dp
 
-    val buttonWidth = 120.dp
     val buttonColor = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
     val buttonText = MaterialTheme.colorScheme.tertiary
 
+    val viewModel = sharedViewModel<MainViewModel>(navController)
+
     LaunchedEffect(Unit) {
         LocalTheme.value = preferences.getBoolean(Constants.EDIT_KEY, false)
+        viewModel.ensurePoemsLoaded()
     }
     Column(
         modifier = Modifier
@@ -133,6 +135,6 @@ fun MainScreen(navController: NavController, preferences: SharedPreferences) {
 fun MainScreenPreview() {
     val navController = rememberNavController()
     val localContext = LocalContext.current
-    val preferences = localContext.getSharedPreferences(Constants.PREFERENCES, MODE_PRIVATE)
+    val preferences = localContext.getSharedPreferences(Constants.PREFERENCES_MAIN, MODE_PRIVATE)
     MainScreen(navController, preferences)
 }

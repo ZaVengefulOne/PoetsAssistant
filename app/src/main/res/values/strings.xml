@@ -34,4 +34,5 @@
     <string name="rhyme_stress_info_content_description">Информация об ударении</string>
     <string name="rhyme_load_error">Не удалось загрузить рифмы. Проверьте интернет и попробуйте снова.</string>
     <string name="ok">ОК</string>
+    <string name="poem_widget_description">Ваш стих на сегодня:</string>
 </resources>

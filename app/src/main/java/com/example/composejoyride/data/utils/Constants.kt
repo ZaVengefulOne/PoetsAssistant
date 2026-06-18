@@ -48,7 +48,8 @@ object Constants {
 
     const val APP_VERSION = "1.0.6"
 
-    const val PREFERENCES = "vengeful_preferences"
+    const val PREFERENCES_MAIN = "vengeful_preferences"
+    const val PREFERENCES_POEM = "poem_preferences"
     const val EDIT_KEY = "dark_theme"
     val vowels = setOf(
         'а', 'е', 'ё', 'и', 'о', 'у', 'ы', 'э', 'ю', 'я',

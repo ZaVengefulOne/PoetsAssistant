@@ -35,7 +35,6 @@ fun VengScaffold(
     val scrollBottomInset = if (bottomBarVisible) LiquidBottomBarHeight else 0.dp
 
     val navHostBottomPadding = if (LiquidGlassSupport.enabled) {
-        // Content draws under the floating glass bar; only reserve the gesture area.
         navigationBarBottom
     } else {
         navigationBarBottom + scrollBottomInset

@@ -4,9 +4,8 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composejoyride.data.Interactors.ParseInteractor.Companion.SEARCH_KEY
+import com.example.composejoyride.data.network.interactors.ParseInteractor.Companion.SEARCH_KEY
 import com.example.composejoyride.data.repositories.ArticlesRepository
-import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.data.utils.toArticles
 import com.example.composejoyride.data.utils.toCacheArticles
 import com.example.composejoyride.di.models.Article

@@ -146,6 +146,9 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.ui.auth)
 
+    // Widget
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
 
     //Tests
     testImplementation(libs.junit)

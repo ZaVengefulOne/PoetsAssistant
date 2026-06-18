@@ -2,14 +2,22 @@ package com.example.composejoyride.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.example.composejoyride.data.Interactors.ParseInteractor
+import com.example.composejoyride.data.network.interactors.ParseInteractor
 import com.example.composejoyride.data.dao.ArticlesDao
 import com.example.composejoyride.data.dao.NotesDao
+import com.example.composejoyride.data.dao.PoemsDao
 import com.example.composejoyride.data.databases.ArticlesDatabase
 import com.example.composejoyride.data.databases.NotesDatabase
+import com.example.composejoyride.data.databases.PoemsDatabase
+import com.example.composejoyride.data.datasources.PoemOfDayStore
+import com.example.composejoyride.data.datasources.ArsPoeticaAssetsDataSource
+import com.example.composejoyride.data.network.interactors.PoemInteractor
+import com.example.composejoyride.data.network.interactors.interfaces.IPoemInteractor
 import com.example.composejoyride.data.repositories.ArticlesRepository
 import com.example.composejoyride.data.repositories.NotesRepository
+import com.example.composejoyride.data.repositories.PoemRepository
 import com.example.composejoyride.data.repositories.RhymeRepository
+import com.example.composejoyride.data.repositories.interfaces.IPoemRepository
 import com.example.composejoyride.data.rhyme.IRhymeProvider
 import com.example.composejoyride.data.rhyme.RifmovkaRhymeProvider
 import dagger.Module
@@ -40,6 +48,36 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideArticlesDatabase(@ApplicationContext context: Context): ArticlesDatabase {
+        return Room.databaseBuilder(
+            context,
+            ArticlesDatabase::class.java,
+            "cache",
+        ).fallbackToDestructiveMigration(true).build()
+    }
+
+    @Provides
+    fun provideArticlesDao(database: ArticlesDatabase): ArticlesDao {
+        return database.articlesDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providePoemsDatabase(@ApplicationContext context: Context): PoemsDatabase {
+        return Room.databaseBuilder(
+            context,
+            PoemsDatabase::class.java,
+            "poems",
+        ).fallbackToDestructiveMigration(true).build()
+    }
+
+    @Provides
+    fun providePoemsDao(database: PoemsDatabase): PoemsDao {
+        return database.poemsDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideNotesRepository(notesDao: NotesDao): NotesRepository {
         return NotesRepository(notesDao)
     }
@@ -62,17 +100,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideArticlesDatabase(@ApplicationContext context: Context): ArticlesDatabase {
-        return Room.databaseBuilder(
-            context,
-            ArticlesDatabase::class.java,
-            "cache",
-        ).fallbackToDestructiveMigration(true).build()
-    }
+    fun providePoemInteractor(
+        poemsDao: PoemsDao,
+        arsPoeticaAssetsDataSource: ArsPoeticaAssetsDataSource,
+        poemOfDayStore: PoemOfDayStore
+    ): IPoemInteractor = PoemInteractor(poemsDao, arsPoeticaAssetsDataSource, poemOfDayStore)
 
     @Provides
-    fun provideArticlesDao(database: ArticlesDatabase): ArticlesDao {
-        return database.articlesDao()
+    @Singleton
+    fun providePoemRepository(interactor: IPoemInteractor): IPoemRepository {
+        return PoemRepository(interactor)
     }
 
     @Provides

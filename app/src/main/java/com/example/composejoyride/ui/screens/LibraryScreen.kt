@@ -33,7 +33,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -53,15 +52,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.composejoyride.R
-import com.example.composejoyride.data.Interactors.ParseInteractor.Companion.SEARCH_KEY
-import com.example.composejoyride.data.utils.Constants
+import com.example.composejoyride.data.network.interactors.ParseInteractor.Companion.SEARCH_KEY
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.TheFont
 import com.example.composejoyride.ui.theme.composables.VengListItem
 import com.example.composejoyride.ui.theme.composables.VengOutlinedTextField
-import com.example.composejoyride.ui.theme.composables.VengPlaceholderText
 import com.example.composejoyride.ui.theme.composables.VengTopAppBar
 import com.example.composejoyride.ui.theme.liquid.LocalScrollBottomInset
 import com.example.composejoyride.ui.viewModels.ArticleViewModel
