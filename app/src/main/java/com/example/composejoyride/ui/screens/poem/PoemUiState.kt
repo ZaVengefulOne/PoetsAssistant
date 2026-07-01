@@ -5,6 +5,7 @@ sealed interface PoemUiState {
     data class Success(
         val title: String,
         val text: String,
+        val author: String,
         val id: Int,
         val isStarred: Boolean,
     ) : PoemUiState

@@ -8,6 +8,7 @@
     <string name="settings">Настройки</string>
     <string name="account">Аккаунт</string>
     <string name="library">Библиотека статей</string>
+    <string name="starred_poems">Избранные стихи</string>
     <string name="press_the_button">Нажмите на кнопку, чтобы отобразить случайную статью</string>
     <string name="topic_name">Название статьи</string>
     <string name="first_words">Первые строки статьи</string>

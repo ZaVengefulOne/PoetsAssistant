@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Abc
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.ContactPage
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -112,6 +113,18 @@ fun MainScreen(navController: NavController, preferences: SharedPreferences) {
                 textColor = buttonText,
                 image = Icons.Filled.AutoStories,
                 text = stringResource(id = R.string.library),
+                buttonType = VengButtonType.Liquid
+            )
+
+            Spacer(modifier = Modifier.height(Dimens.paddingSpacer))
+
+            VengButton(
+                onClick = {navController.navigate(NoteGraph.STARRED_POEMS_SCREEN)},
+                modifier = Modifier.fillMaxWidth(),
+                buttonColor = buttonColor,
+                textColor = buttonText,
+                image = Icons.Filled.Star,
+                text = stringResource(id = R.string.starred_poems),
                 buttonType = VengButtonType.Liquid
             )
 

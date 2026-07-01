@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.composejoyride.data.utils.NavHostContainer
 import com.example.composejoyride.ui.theme.liquid.LiquidBottomBarHeight
 import com.example.composejoyride.ui.theme.liquid.LiquidGlassSupport
 import com.example.composejoyride.ui.theme.liquid.LocalLiquidBackdrop

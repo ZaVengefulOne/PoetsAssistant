@@ -46,7 +46,7 @@ object Constants {
 
     )
 
-    const val APP_VERSION = "1.0.6"
+    const val APP_VERSION = "1.0.7"
 
     const val PREFERENCES_MAIN = "vengeful_preferences"
     const val PREFERENCES_POEM = "poem_preferences"

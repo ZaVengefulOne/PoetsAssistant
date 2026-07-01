@@ -1,4 +1,4 @@
-package com.example.composejoyride.ui.theme.composables
+package com.example.composejoyride.data.utils
 
 import android.content.SharedPreferences
 import androidx.compose.foundation.background
@@ -12,7 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.ui.screens.AOTD
 import com.example.composejoyride.ui.screens.AdminScreen
 import com.example.composejoyride.ui.screens.ArticleScreen
@@ -24,6 +23,8 @@ import com.example.composejoyride.ui.screens.Notes
 import com.example.composejoyride.ui.screens.ProfileScreen
 import com.example.composejoyride.ui.screens.RhymeScreen
 import com.example.composejoyride.ui.screens.Settings
+import com.example.composejoyride.ui.screens.Starred
+import com.example.composejoyride.ui.screens.poem.PoemScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -84,6 +85,15 @@ fun NavHostContainer(
             }
             composable(NoteGraph.ARTICLE_SCREEN) {
                 ArticleScreen(navController)
+            }
+            composable(NoteGraph.STARRED_POEMS_SCREEN) {
+                Starred(
+                    navController,
+                    bottomBarVisibility
+                )
+            }
+            composable(NoteGraph.POEM_SCREEN) {
+                PoemScreen(navController)
             }
             composable(NoteGraph.NOTE_SCREEN) {
                 Note(

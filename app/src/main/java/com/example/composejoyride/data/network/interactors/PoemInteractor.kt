@@ -40,10 +40,21 @@ class PoemInteractor @Inject constructor(
         poemOfDayStore.saveOverrideForToday(randomId)
         return dao.getPoemById(randomId)
     }
+
+    override suspend fun getStarredPoems(): List<Poem> {
+        ensurePoemsLoaded()
+        return dao.getStarredPoems()
+    }
+
     override suspend fun toggleStar(poemId: Int) {
         val poem = dao.getPoemById(poemId) ?: return
         dao.setStarred(poemId, !poem.isStarred)
     }
+
+    override suspend fun getPoem(poemId: Int): Poem? {
+        return dao.getPoemById(poemId)
+    }
+
     private fun poemOfDayId(count: Int): Int {
         val dayIndex = java.time.LocalDate.now().dayOfYear - 1 // 0..364
         return dayIndex % count

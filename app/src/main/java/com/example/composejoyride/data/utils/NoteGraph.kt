@@ -12,6 +12,8 @@ object NoteGraph {
     const val AUTH_SCREEN = "auth"
     const val PROFILE_SCREEN = "profile"
     const val ADMIN_SCREEN = "admin"
+    const val STARRED_POEMS_SCREEN = "starred_poems"
+    const val POEM_SCREEN = "poem_screen"
     const val ROOT = "root"
     const val MAIN = "main_graph"
 }
