@@ -41,15 +41,7 @@ jobs:
     - name: Run Detekt
       run: ./gradlew detekt
       continue-on-error: true
-      
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
 
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest
       
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: PoetryHelper-APK
-        path: app/build/outputs/apk/debug/app-debug.apk
