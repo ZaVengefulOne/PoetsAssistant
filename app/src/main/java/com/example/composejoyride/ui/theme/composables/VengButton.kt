@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -43,6 +44,7 @@ fun VengButton(
     text: String = "",
     image: ImageVector? = null,
     icon: Int? = null,
+    iconColor: Color = MaterialTheme.colorScheme.primary,
     buttonColor: ButtonColors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
     textColor: Color = MaterialTheme.colorScheme.tertiary,
     isInteractive: Boolean = true,
@@ -154,15 +156,13 @@ fun VengButton(
                             contentDescription = "",
                             tint = textColor
                         )
-                    } else if (icon != null)
-                    {
+                    } else if (icon != null) {
                         Icon(
                             painter = painterResource(icon),
                             contentDescription = "",
                             tint = textColor
                         )
-                    } else
-                    {
+                    } else {
                         Icon(
                             imageVector = Icons.Default.BrokenImage,
                             contentDescription = "",
@@ -216,6 +216,52 @@ fun VengButton(
                     onClick = onClick,
                     backdrop = liquidBackdrop,
                     modifier = modifier,
+                    isInteractive = isInteractive,
+                    tint = buttonColor.contentColor,
+                    surfaceColor = buttonColor.containerColor,
+                    content = { liquidContent() },
+                )
+            }
+        }
+
+        VengButtonType.LiquidIcon -> {
+            val liquidContent: @Composable () -> Unit = {
+                Row(horizontalArrangement = Arrangement.Center) {
+                    if (image != null) {
+                        Icon(
+                            imageVector = image,
+                            contentDescription = "",
+                            tint = iconColor
+                        )
+                    } else if (icon != null) {
+                        Icon(
+                            painter = painterResource(icon),
+                            contentDescription = "",
+                            tint = iconColor
+                        )
+                    }
+                }
+            }
+            if (!LiquidGlassSupport.enabled) {
+                Button(
+                    modifier = modifier,
+                    onClick = onClick,
+                    colors = buttonColor,
+//                    shape = RoundedCornerShape(24.dp),
+                    shape = CircleShape,
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = 10.dp,
+                        pressedElevation = 5.dp
+                    ),
+                ) {
+                    liquidContent()
+                }
+            } else {
+                LiquidButton(
+                    onClick = onClick,
+                    backdrop = liquidBackdrop,
+                    modifier = modifier,
+                    shape = CircleShape,
                     isInteractive = isInteractive,
                     tint = buttonColor.contentColor,
                     surfaceColor = buttonColor.containerColor,

@@ -1,10 +1,11 @@
-package com.example.composejoyride.data.network.interactors
+package com.example.composejoyride.data.interactors
 
 import com.example.composejoyride.data.dao.PoemsDao
 import com.example.composejoyride.data.datasources.PoemOfDayStore
 import com.example.composejoyride.data.datasources.ArsPoeticaAssetsDataSource
-import com.example.composejoyride.data.network.interactors.interfaces.IPoemInteractor
+import com.example.composejoyride.data.interactors.interfaces.IPoemInteractor
 import com.example.composejoyride.data.entitites.Poem
+import java.time.LocalDate
 import javax.inject.Inject
 
 class PoemInteractor @Inject constructor(
@@ -56,7 +57,7 @@ class PoemInteractor @Inject constructor(
     }
 
     private fun poemOfDayId(count: Int): Int {
-        val dayIndex = java.time.LocalDate.now().dayOfYear - 1 // 0..364
+        val dayIndex = LocalDate.now().dayOfYear - 1 // 0..364
         return dayIndex % count
     }
 }

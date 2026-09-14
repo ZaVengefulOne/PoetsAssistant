@@ -1,7 +1,5 @@
-package com.example.composejoyride.ui.screens
+package com.example.composejoyride.ui.screens.main
 
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,50 +9,38 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Abc
+import androidx.compose.material.icons.filled.Analytics
 import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.ContactPage
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.composejoyride.R
-import com.example.composejoyride.data.utils.Constants
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.VengButtonType
-import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens
-import com.example.composejoyride.ui.theme.LocalTheme
 import com.example.composejoyride.ui.theme.TheFont
 import com.example.composejoyride.ui.theme.composables.VengButton
 import com.example.composejoyride.ui.viewModels.MainViewModel
 
 @Composable
-fun MainScreen(navController: NavController, preferences: SharedPreferences) {
-    val paddingMain = 40.dp
-    val spacerTop = 48.dp
-    val paddingText = 24.dp
-
-    val buttonColor = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
-    val buttonText = MaterialTheme.colorScheme.tertiary
-
-    val viewModel = sharedViewModel<MainViewModel>(navController)
-
-    LaunchedEffect(Unit) {
-        LocalTheme.value = preferences.getBoolean(Constants.EDIT_KEY, false)
-        viewModel.ensurePoemsLoaded()
-    }
+fun OldMain(
+    navController: NavController,
+    paddingMain: Dp,
+    paddingText: Dp,
+    spacerTop: Dp,
+    buttonColor: ButtonColors,
+    buttonText: Color) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -119,7 +105,7 @@ fun MainScreen(navController: NavController, preferences: SharedPreferences) {
             Spacer(modifier = Modifier.height(Dimens.paddingSpacer))
 
             VengButton(
-                onClick = {navController.navigate(NoteGraph.STARRED_POEMS_SCREEN)},
+                onClick = { navController.navigate(NoteGraph.STARRED_POEMS_SCREEN) },
                 modifier = Modifier.fillMaxWidth(),
                 buttonColor = buttonColor,
                 textColor = buttonText,
@@ -139,15 +125,18 @@ fun MainScreen(navController: NavController, preferences: SharedPreferences) {
                 text = stringResource(id = R.string.settings),
                 buttonType = VengButtonType.Liquid
             )
+
+            Spacer(modifier = Modifier.height(Dimens.paddingSpacer))
+
+            VengButton(
+                onClick = { navController.navigate(NoteGraph.POEM_ANALYZER_SCREEN) },
+                modifier = Modifier.fillMaxWidth(),
+                buttonColor = buttonColor,
+                textColor = buttonText,
+                image = Icons.Filled.Analytics,
+                text = stringResource(id = R.string.poem_analyze),
+                buttonType = VengButtonType.Liquid
+            )
         }
     }
-}
-
-@Preview
-@Composable
-fun MainScreenPreview() {
-    val navController = rememberNavController()
-    val localContext = LocalContext.current
-    val preferences = localContext.getSharedPreferences(Constants.PREFERENCES_MAIN, MODE_PRIVATE)
-    MainScreen(navController, preferences)
 }

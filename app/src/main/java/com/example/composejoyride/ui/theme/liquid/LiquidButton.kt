@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ fun LiquidButton(
     modifier: Modifier = Modifier,
     isInteractive: Boolean = true,
     tint: Color = Color.Unspecified,
+    shape: Shape = Capsule(),
     surfaceColor: Color = Color.Unspecified,
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -54,7 +56,7 @@ fun LiquidButton(
         modifier
             .drawBackdrop(
                 backdrop = backdrop,
-                shape = { Capsule() },
+                shape = { shape },
                 effects = {
                     vibrancy()
                     blur(2f.dp.toPx())

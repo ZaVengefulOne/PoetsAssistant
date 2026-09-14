@@ -1,4 +1,4 @@
-package com.example.composejoyride.data.network.interactors.interfaces
+package com.example.composejoyride.data.interactors.interfaces
 
 import com.example.composejoyride.di.models.Article
 

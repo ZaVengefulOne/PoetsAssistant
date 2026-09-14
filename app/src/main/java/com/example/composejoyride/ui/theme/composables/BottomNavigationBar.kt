@@ -1,5 +1,6 @@
 package com.example.composejoyride.ui.theme.composables
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -40,6 +41,7 @@ fun BottomNavigationBar(
     visibility: MutableState<Boolean>,
     backdrop: Backdrop?,
     useLiquid: Boolean = LiquidGlassSupport.enabled,
+    disableFirebase: Boolean = false
 ) {
     val liquidEnabled = useLiquid && backdrop != null && LiquidGlassSupport.enabled
     val isAdmin = remember { mutableStateOf(false) }
@@ -54,14 +56,15 @@ fun BottomNavigationBar(
                 isAdmin.value = false
             }
     }
-
+    Log.d("VENGEFUL", "disableFirebase = $disableFirebase, isBottomBarVisible = $visibility")
     val navItems = Constants.BottomNavItems.filter {
-        if (isAdmin.value) {
-            it.route != NoteGraph.PROFILE_SCREEN
-        } else {
-            it.route != NoteGraph.ADMIN_SCREEN
+        when {
+            isAdmin.value -> it.route != NoteGraph.PROFILE_SCREEN
+            disableFirebase -> it.route != NoteGraph.PROFILE_SCREEN && it.route != NoteGraph.ADMIN_SCREEN
+            else -> it.route != NoteGraph.ADMIN_SCREEN
         }
     }
+    Log.d("VENGEFUL", "${navItems.filter { it.route == NoteGraph.PROFILE_SCREEN || it.route == NoteGraph.ADMIN_SCREEN }}")
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -74,7 +77,7 @@ fun BottomNavigationBar(
     ) {
         if (liquidEnabled) {
             LiquidBottomBar(
-                backdrop = backdrop!!,
+                backdrop = backdrop,
                 selectedIndex = selectedIndex,
                 onTabSelected = { index ->
                     navController.navigate(navItems[index].route) {
@@ -88,7 +91,7 @@ fun BottomNavigationBar(
                 Icon(
                     imageVector = navItems[index].icon,
                     contentDescription = navItems[index].label,
-                    tint = colorScheme.primary,
+                    tint = colorScheme.tertiary,
                 )
             }
         } else {
@@ -109,7 +112,13 @@ fun BottomNavigationBar(
                         BottomNavigationItem(
                             selected = currentRoute == navItem.route,
                             onClick = { navController.navigate(navItem.route) },
-                            icon = { Icon(navItem.icon, contentDescription = navItem.label) },
+                            icon = {
+                                Icon(
+                                    imageVector = navItem.icon,
+                                    contentDescription = navItem.label,
+                                    tint = colorScheme.tertiary
+                                )
+                            },
                             alwaysShowLabel = false
                         )
                     }

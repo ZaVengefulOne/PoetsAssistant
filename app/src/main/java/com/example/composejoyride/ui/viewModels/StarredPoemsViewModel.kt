@@ -3,7 +3,7 @@ package com.example.composejoyride.ui.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composejoyride.data.entitites.Poem
-import com.example.composejoyride.data.network.interactors.interfaces.IPoemInteractor
+import com.example.composejoyride.data.interactors.interfaces.IPoemInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

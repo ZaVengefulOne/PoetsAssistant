@@ -4,12 +4,14 @@ coilCompose = "2.7.0"
 composeBom = "2025.04.01"
 composeBomVersion = "2023.03.00"
 composeRichEditor = "1.0.0-rc10"
+converterGson = "3.0.0"
 coreKtx = "1.16.0"
 espressoCore = "3.6.1"
 firebaseBom = "33.14.0"
 firebaseUiAuth = "8.0.2"
 foundation = "1.8.2"
 glanceAppwidget = "1.1.1"
+gson = "2.14.0"
 hiltCompiler = "2.59.2"
 hiltNavigationCompose = "1.2.0"
 jsoup = "1.14.2"
@@ -26,6 +28,7 @@ mockk = "1.14.2"
 mockkAgent = "1.14.2"
 mockkAndroid = "1.14.2"
 navigationCompose = "2.8.9"
+retrofit = "3.0.0"
 richeditorCompose = "1.0.0-rc14"
 roomRuntime = "2.7.1"
 runtimeLivedata = "1.8.0"
@@ -51,6 +54,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeB
 androidx-work-runtime-ktx-v281 = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtxVersion" }
 compose-bom-v20230300 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
 compose-rich-editor = { module = "com.github.MohamedRejeb:compose-rich-editor", version.ref = "composeRichEditor" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 ext-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
@@ -59,6 +63,7 @@ firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseUiAuth" }
 google-material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltCompiler" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
@@ -73,6 +78,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockkAgent" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }

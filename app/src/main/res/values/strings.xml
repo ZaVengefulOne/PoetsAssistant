@@ -6,6 +6,7 @@
     <string name="notes">Заметки</string>
     <string name="aotd">Мне повезёт!</string>
     <string name="settings">Настройки</string>
+    <string name="poem_analyze">Анализ стиха</string>
     <string name="account">Аккаунт</string>
     <string name="library">Библиотека статей</string>
     <string name="starred_poems">Избранные стихи</string>

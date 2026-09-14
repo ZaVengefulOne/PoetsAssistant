@@ -1,6 +1,6 @@
 package com.example.composejoyride.data.repositories
 
-import com.example.composejoyride.data.network.interactors.interfaces.IPoemInteractor
+import com.example.composejoyride.data.interactors.interfaces.IPoemInteractor
 import com.example.composejoyride.data.repositories.interfaces.IPoemRepository
 import com.example.composejoyride.data.entitites.Poem
 import javax.inject.Inject

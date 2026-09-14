@@ -87,7 +87,7 @@ fun Note(
                 },
                 imageVector = Icons.Filled.Save,
                 contentDescription = "Сохранить",
-                size = 56.dp,
+                buttonSize = 56.dp,
             )
             VengIconButton(
                 onClick = {
@@ -97,7 +97,7 @@ fun Note(
                 },
                 imageVector = Icons.Filled.Delete,
                 contentDescription = "Удалить",
-                size = 56.dp,
+                buttonSize = 56.dp,
                 contentColor = colorScheme.error,
             )
         }

@@ -47,6 +47,8 @@ object Constants {
     )
 
     const val APP_VERSION = "1.0.7"
+    const val BASE_SERVER_PORT = "8000"
+    const val BASE_SERVER_URL = "http://192.168.1.50:${BASE_SERVER_PORT}/api/v1/"
 
     const val PREFERENCES_MAIN = "vengeful_preferences"
     const val PREFERENCES_POEM = "poem_preferences"

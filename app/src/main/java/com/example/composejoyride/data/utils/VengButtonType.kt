@@ -4,5 +4,6 @@ enum class VengButtonType {
     Default,
     Outlined,
     Icon,
-    Liquid
+    Liquid,
+    LiquidIcon
 }

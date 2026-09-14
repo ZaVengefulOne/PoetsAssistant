@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.composejoyride.R
-import com.example.composejoyride.data.network.interactors.ParseInteractor.Companion.SEARCH_KEY
+import com.example.composejoyride.data.interactors.ParseInteractor.Companion.SEARCH_KEY
 import com.example.composejoyride.data.utils.NoteGraph
 import com.example.composejoyride.data.utils.sharedViewModel
 import com.example.composejoyride.ui.theme.Dimens

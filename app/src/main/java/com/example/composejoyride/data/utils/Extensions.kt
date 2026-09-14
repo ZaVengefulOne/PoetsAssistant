@@ -53,3 +53,11 @@ fun formatTimestamp(timestamp: Any?): String {
     }
 }
 
+fun formatPercents(number: Double): String {
+    return "%.2f%%".format(number * 100)
+}
+
+fun formatPoem(poem: String): String {
+    return poem.dropLast(1).replaceFirst("[", "")
+}
+

@@ -1,6 +1,6 @@
 package com.example.composejoyride.data.repositories
 
-import com.example.composejoyride.data.network.interactors.ParseInteractor
+import com.example.composejoyride.data.interactors.ParseInteractor
 import com.example.composejoyride.data.dao.ArticlesDao
 import com.example.composejoyride.data.entitites.CacheArticle
 import com.example.composejoyride.data.repositories.interfaces.IArticlesRepository

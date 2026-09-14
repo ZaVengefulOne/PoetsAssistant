@@ -1,32 +1,25 @@
 package com.example.composejoyride.ui.screens
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.PersonOutline
+import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import com.example.composejoyride.ui.theme.composables.VengOutlinedTextField
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -45,9 +38,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.composejoyride.R
 import com.example.composejoyride.data.utils.NoteGraph
+import com.example.composejoyride.data.utils.VengButtonType
+import com.example.composejoyride.data.utils.onDisableFirebase
+import com.example.composejoyride.data.utils.onError
+import com.example.composejoyride.data.utils.onSuccess
 import com.example.composejoyride.data.utils.sharedViewModel
+import com.example.composejoyride.data.utils.signInAnonymously
 import com.example.composejoyride.ui.theme.LocalTheme
 import com.example.composejoyride.ui.theme.TheFont
+import com.example.composejoyride.ui.theme.composables.VengButton
+import com.example.composejoyride.ui.theme.composables.VengOutlinedTextField
 import com.example.composejoyride.ui.theme.composables.rememberFirebaseAuthLauncher
 import com.example.composejoyride.ui.viewModels.SettingsViewModel
 import com.firebase.ui.auth.AuthUI
@@ -60,10 +60,9 @@ import com.google.firebase.ktx.Firebase
 fun AuthScreen(
     navController: NavController,
     isBottomBarVisible: MutableState<Boolean>,
-    //preferences: SharedPreferences
+    disableFirebase: MutableState<Boolean>
 ) {
     val backgroundColor = MaterialTheme.colorScheme.background
-    val buttonColor = MaterialTheme.colorScheme.secondary
     val textColor = MaterialTheme.colorScheme.tertiary
     val font = TheFont
     val viewmodel: SettingsViewModel = sharedViewModel(navController)
@@ -125,32 +124,20 @@ fun AuthScreen(
                 textAlign = TextAlign.Center,
                 fontFamily = font,
                 color = textColor,
-                fontSize = 32.sp
+                fontSize = 48.sp
             )
 
-            OutlinedButton(
+            VengButton(
                 onClick = { launcher.launch(signInIntent) },
-                shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(2.dp, buttonColor),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Email,
-                    contentDescription = "Войти по email",
-                    tint = textColor
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "Войти по Email",
-                    fontFamily = font,
-                    color = textColor,
-                    fontSize = 18.sp
-                )
-            }
+                    .height(56.dp),
+                image = Icons.Default.Email,
+                text = "Войти через Email",
+                buttonType = VengButtonType.Liquid
+            )
 
-            OutlinedButton(
+            VengButton(
                 onClick = {
                     signInAnonymously(
                         onSuccess = { onSuccess(navController, isBottomBarVisible) },
@@ -158,49 +145,35 @@ fun AuthScreen(
                         false
                     )
                 },
-                shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(2.dp, buttonColor),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.PersonOutline,
-                    contentDescription = "Гость",
-                    tint = textColor
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "Войти как гость",
-                    fontFamily = font,
-                    color = textColor,
-                    fontSize = 18.sp
-                )
-            }
+                    .height(56.dp),
+                image = Icons.Default.PersonOutline,
+                text = "Войти как гость",
+                buttonType = VengButtonType.Liquid
+            )
 
-            OutlinedButton(
+            VengButton(
                 onClick = {
                     showAdminDialog.value = true
                 },
-                shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(2.dp, buttonColor),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AdminPanelSettings,
-                    contentDescription = "Администратор",
-                    tint = textColor
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = "Войти как администратор",
-                    fontFamily = font,
-                    color = textColor,
-                    fontSize = 18.sp
-                )
-            }
+                    .height(56.dp),
+                image = Icons.Default.AdminPanelSettings,
+                text = "Войти как администратор",
+                buttonType = VengButtonType.Liquid
+            )
+
+            VengButton(
+                onClick = { onDisableFirebase(navController, isBottomBarVisible, disableFirebase) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                image = Icons.Default.SkipNext,
+                text = "Войти без Firebase",
+                buttonType = VengButtonType.Liquid
+            )
 
             if (showAdminDialog.value) {
                 var login by remember { mutableStateOf("") }
@@ -220,13 +193,23 @@ fun AuthScreen(
                             VengOutlinedTextField(
                                 value = login,
                                 onValueChange = { login = it },
-                                label = { Text("Логин", color = MaterialTheme.colorScheme.tertiary) },
+                                label = {
+                                    Text(
+                                        "Логин",
+                                        color = MaterialTheme.colorScheme.tertiary
+                                    )
+                                },
                                 singleLine = true,
                             )
                             VengOutlinedTextField(
                                 value = password,
                                 onValueChange = { password = it },
-                                label = { Text("Пароль", color = MaterialTheme.colorScheme.tertiary) },
+                                label = {
+                                    Text(
+                                        "Пароль",
+                                        color = MaterialTheme.colorScheme.tertiary
+                                    )
+                                },
                                 visualTransformation = PasswordVisualTransformation(),
                                 singleLine = true,
                             )
@@ -275,37 +258,4 @@ fun AuthScreen(
 
         }
     }
-}
-
-fun signInAnonymously(onSuccess: () -> Unit, onError: (String) -> Unit, isAdmin: Boolean) {
-    FirebaseAuth.getInstance()
-        .signInAnonymously()
-        .addOnCompleteListener { task ->
-            val db = Firebase.firestore
-            val user = FirebaseAuth.getInstance().currentUser
-            user?.let {
-                val userMap = mapOf(
-                    "uid" to it.uid,
-                    "email" to it.email,
-                    "isAnonymous" to it.isAnonymous,
-                    "timestamp" to System.currentTimeMillis(),
-                    "isAdmin" to isAdmin
-                )
-                db.collection("users").document(it.uid).set(userMap)
-            }
-            if (task.isSuccessful) {
-                onSuccess()
-            } else {
-                onError(task.exception?.message ?: "Ошибка авторизации")
-            }
-        }
-}
-
-fun onSuccess(navController: NavController, isBottomBarVisible: MutableState<Boolean>) {
-    isBottomBarVisible.value = true
-    navController.navigate(NoteGraph.MAIN_SCREEN)
-}
-
-fun onError(error: String, context: Context) {
-    Toast.makeText(context, "Ошибка входа: $error", Toast.LENGTH_LONG).show()
 }

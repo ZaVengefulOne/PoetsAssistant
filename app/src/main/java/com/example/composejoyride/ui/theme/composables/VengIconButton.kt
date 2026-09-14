@@ -9,6 +9,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -17,13 +19,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastCoerceAtMost
+import androidx.compose.ui.util.lerp
 import com.example.composejoyride.ui.theme.liquid.LiquidGlassSupport
 import com.example.composejoyride.ui.theme.liquid.liquidGlassSurfaceTint
 import com.example.composejoyride.ui.theme.liquid.rememberIsolatedLiquidBackdrop
+import com.example.composejoyride.ui.theme.liquid.utils.InteractiveHighlight
 import com.kyant.backdrop.drawBackdrop
 import com.kyant.backdrop.effects.blur
 import com.kyant.backdrop.effects.lens
 import com.kyant.backdrop.effects.vibrancy
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.tanh
 
 @Composable
 fun VengIconButton(
@@ -31,13 +41,19 @@ fun VengIconButton(
     imageVector: ImageVector,
     contentDescription: String?,
     modifier: Modifier = Modifier,
-    size: Dp = 64.dp,
+    buttonSize: Dp = 64.dp,
     useLiquid: Boolean = LiquidGlassSupport.enabled,
     containerColor: Color = MaterialTheme.colorScheme.secondary,
     contentColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     val colorScheme = MaterialTheme.colorScheme
+    val animationScope = rememberCoroutineScope()
 
+    val interactiveHighlight = remember(animationScope) {
+        InteractiveHighlight(
+            animationScope = animationScope
+        )
+    }
     if (useLiquid && LiquidGlassSupport.enabled) {
         val buttonBackdrop = rememberIsolatedLiquidBackdrop(tintColor = containerColor)
         val surfaceTint = liquidGlassSurfaceTint()
@@ -45,7 +61,7 @@ fun VengIconButton(
 
         Box(
             modifier = modifier
-                .size(size)
+                .size(buttonSize)
                 .shadow(
                     elevation = 8.dp,
                     shape = CircleShape,
@@ -57,7 +73,7 @@ fun VengIconButton(
         ) {
             Box(
                 Modifier
-                    .size(size)
+                    .size(buttonSize)
                     .drawBackdrop(
                         backdrop = buttonBackdrop,
                         shape = { CircleShape },
@@ -67,22 +83,57 @@ fun VengIconButton(
                             lens(12f.dp.toPx(), 24f.dp.toPx())
                         },
                         onDrawSurface = { drawRect(surfaceTint) },
+                        layerBlock =
+                            {
+                                val width = size.width
+                                val height = size.height
+
+                                val progress = interactiveHighlight.pressProgress
+                                val scale = lerp(1f, 1f + 4f.dp.toPx() / size.height, progress)
+
+                                val maxOffset = size.minDimension
+                                val initialDerivative = 0.05f
+                                val offset = interactiveHighlight.offset
+                                translationX = maxOffset * tanh(initialDerivative * offset.x / maxOffset)
+                                translationY = maxOffset * tanh(initialDerivative * offset.y / maxOffset)
+
+                                val maxDragScale = 4f.dp.toPx() / size.height
+                                val offsetAngle = atan2(offset.y, offset.x)
+                                scaleX =
+                                    scale +
+                                            maxDragScale * abs(cos(offsetAngle) * offset.x / size.maxDimension) *
+                                            (width / height).fastCoerceAtMost(1f)
+                                scaleY =
+                                    scale +
+                                            maxDragScale * abs(sin(offsetAngle) * offset.y / size.maxDimension) *
+                                            (height / width).fastCoerceAtMost(1f)
+                        }
                     )
-                    .clickable(role = Role.Button, onClick = onClick),
+                    .clickable(
+                        interactionSource = null,
+                        indication = null,
+                        role = Role.Button,
+                        onClick = onClick
+                    )
+                    .then(
+                            Modifier
+                                .then(interactiveHighlight.modifier)
+                                .then(interactiveHighlight.gestureModifier)
+                    ),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = imageVector,
                     contentDescription = contentDescription,
                     tint = contentColor,
-                    modifier = Modifier.size(size * 0.42f),
+                    modifier = Modifier.size(buttonSize * 0.42f),
                 )
             }
         }
     } else {
         OutlinedIconButton(
             onClick = onClick,
-            modifier = modifier.size(size),
+            modifier = modifier.size(buttonSize),
             shape = CircleShape,
             border = BorderStroke(1.5.dp, contentColor),
         ) {

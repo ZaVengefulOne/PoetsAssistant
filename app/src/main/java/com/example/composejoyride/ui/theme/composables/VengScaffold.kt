@@ -29,6 +29,7 @@ fun VengScaffold(
     navController: NavHostController,
     bottomBarVisibility: MutableState<Boolean>,
     preferences: SharedPreferences,
+    disableFirebase: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
     val bottomBarVisible by bottomBarVisibility
@@ -56,6 +57,7 @@ fun VengScaffold(
                         padding = PaddingValues(bottom = navHostBottomPadding),
                         preferences = preferences,
                         bottomBarVisibility = bottomBarVisibility,
+                        disableFirebase = disableFirebase
                     )
                 }
                 CompositionLocalProvider(LocalLiquidBackdrop provides rootBackdrop) {
@@ -68,6 +70,7 @@ fun VengScaffold(
                             navController = navController,
                             visibility = bottomBarVisibility,
                             backdrop = rootBackdrop,
+                            disableFirebase = disableFirebase.value
                         )
                     }
                 }
@@ -81,6 +84,7 @@ fun VengScaffold(
                     padding = PaddingValues(bottom = navHostBottomPadding),
                     preferences = preferences,
                     bottomBarVisibility = bottomBarVisibility,
+                    disableFirebase = disableFirebase
                 )
                 Box(
                     Modifier
@@ -90,6 +94,7 @@ fun VengScaffold(
                     BottomNavigationBar(
                         navController = navController,
                         visibility = bottomBarVisibility,
+                        disableFirebase = disableFirebase.value,
                         backdrop = null,
                         useLiquid = false,
                     )

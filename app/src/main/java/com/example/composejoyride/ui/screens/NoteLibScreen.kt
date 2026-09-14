@@ -167,13 +167,13 @@ fun Notes(navController: NavController) {
                     },
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add Note",
-                    size = 68.dp,
+                    buttonSize = 68.dp,
                 )
                 VengIconButton(
                     onClick = { openDeleteDialog.value = true },
                     imageVector = Icons.Default.DeleteForever,
                     contentDescription = "Clear Notes",
-                    size = 68.dp,
+                    buttonSize = 68.dp,
                     contentColor = colorScheme.error,
                 )
             }

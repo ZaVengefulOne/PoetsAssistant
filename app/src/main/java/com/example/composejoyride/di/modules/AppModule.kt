@@ -2,7 +2,7 @@ package com.example.composejoyride.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.example.composejoyride.data.network.interactors.ParseInteractor
+import com.example.composejoyride.data.interactors.ParseInteractor
 import com.example.composejoyride.data.dao.ArticlesDao
 import com.example.composejoyride.data.dao.NotesDao
 import com.example.composejoyride.data.dao.PoemsDao
@@ -11,8 +11,10 @@ import com.example.composejoyride.data.databases.NotesDatabase
 import com.example.composejoyride.data.databases.PoemsDatabase
 import com.example.composejoyride.data.datasources.PoemOfDayStore
 import com.example.composejoyride.data.datasources.ArsPoeticaAssetsDataSource
-import com.example.composejoyride.data.network.interactors.PoemInteractor
-import com.example.composejoyride.data.network.interactors.interfaces.IPoemInteractor
+import com.example.composejoyride.data.interactors.PoemInteractor
+import com.example.composejoyride.data.interactors.interfaces.IPoemInteractor
+import com.example.composejoyride.data.network.IServerInteractor
+import com.example.composejoyride.data.network.ServerInteractor
 import com.example.composejoyride.data.repositories.ArticlesRepository
 import com.example.composejoyride.data.repositories.NotesRepository
 import com.example.composejoyride.data.repositories.PoemRepository
@@ -96,6 +98,12 @@ object AppModule {
     @Singleton
     fun provideInteractor(): ParseInteractor {
         return ParseInteractor()
+    }
+
+    @Provides
+    @Singleton
+    fun provideServerInteractor(): IServerInteractor {
+        return ServerInteractor()
     }
 
     @Provides

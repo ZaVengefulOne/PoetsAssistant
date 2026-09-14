@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
             ComposeJoyrideTheme {
                 val navController = rememberNavController()
                 val isBottomBarVisible = remember { mutableStateOf(true) }
+                val disableFirebase = remember { mutableStateOf(false) }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = colorScheme.background
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         bottomBarVisibility = isBottomBarVisible,
                         preferences = sharedPrefs,
+                        disableFirebase = disableFirebase
                     )
                 }
             }

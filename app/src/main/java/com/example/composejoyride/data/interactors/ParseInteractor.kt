@@ -1,6 +1,6 @@
-package com.example.composejoyride.data.network.interactors
+package com.example.composejoyride.data.interactors
 
-import com.example.composejoyride.data.network.interactors.interfaces.IParseInteractor
+import com.example.composejoyride.data.interactors.interfaces.IParseInteractor
 import com.example.composejoyride.di.models.Article
 import org.jsoup.Jsoup
 

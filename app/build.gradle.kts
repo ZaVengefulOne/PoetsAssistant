@@ -114,6 +114,9 @@ dependencies {
     // Network
     implementation(libs.coil.compose)
     implementation(libs.jsoup)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
 
     // Liquid Glass
     implementation(libs.backdrop)

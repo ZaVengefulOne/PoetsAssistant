@@ -17,9 +17,10 @@ import com.example.composejoyride.ui.screens.AdminScreen
 import com.example.composejoyride.ui.screens.ArticleScreen
 import com.example.composejoyride.ui.screens.AuthScreen
 import com.example.composejoyride.ui.screens.Library
-import com.example.composejoyride.ui.screens.MainScreen
+import com.example.composejoyride.ui.screens.main.MainScreen
 import com.example.composejoyride.ui.screens.Note
 import com.example.composejoyride.ui.screens.Notes
+import com.example.composejoyride.ui.screens.PoemAnalyzerScreen
 import com.example.composejoyride.ui.screens.ProfileScreen
 import com.example.composejoyride.ui.screens.RhymeScreen
 import com.example.composejoyride.ui.screens.Settings
@@ -32,7 +33,8 @@ fun NavHostContainer(
     navController: NavHostController,
     padding: PaddingValues,
     preferences: SharedPreferences,
-    bottomBarVisibility: MutableState<Boolean>
+    bottomBarVisibility: MutableState<Boolean>,
+    disableFirebase: MutableState<Boolean>
 ) {
 
     val auth = FirebaseAuth.getInstance()
@@ -55,7 +57,7 @@ fun NavHostContainer(
             }
 
             composable(NoteGraph.AUTH_SCREEN) {
-                AuthScreen(navController, bottomBarVisibility)
+                AuthScreen(navController, bottomBarVisibility, disableFirebase)
             }
 
             composable(NoteGraph.ADMIN_SCREEN) {
@@ -101,6 +103,9 @@ fun NavHostContainer(
                     { navController.navigate(NoteGraph.NOTES_SCREEN) },
                     bottomBarVisibility
                 )
+            }
+            composable(NoteGraph.POEM_ANALYZER_SCREEN) {
+                PoemAnalyzerScreen(navController)
             }
         }
     }
