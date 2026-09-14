@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    
+
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -19,11 +19,7 @@ jobs:
       with:
         distribution: 'jetbrains'
         java-version: '21'
-        java-package: 'jdk'   
-
-    - name: Set Gradle toolchain path
-      run: echo "GRADLE_OPTS=-Dorg.gradle.java.installations.paths=${{ env.JAVA_HOME_21_X64 }}" >> $GITHUB_ENV
-   
+        java-package: 'jdk'
 
     - name: Cache Gradle
       uses: actions/cache@v3
@@ -38,9 +34,13 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
 
-    - name: Configure Gradle toolchain path
+    - name: Set Gradle toolchain path
+      run: echo "GRADLE_OPTS=-Dorg.gradle.java.installations.paths=$JAVA_HOME" >> $GITHUB_ENV
+
+    - name: Show JAVA_HOME for debug
       run: |
-        echo "org.gradle.java.installations.paths=$JAVA_HOME_21_X64" >> gradle.properties
+        echo "JAVA_HOME=$JAVA_HOME"
+        $JAVA_HOME/bin/java -version
 
     - name: Run Ktlint
       run: ./gradlew ktlintCheck
