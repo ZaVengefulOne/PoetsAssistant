@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Poet\'s Assistant</string>
+    <string name="new_main">Новая главная:</string>
     <string name="welcome">Привет и добро пожаловать в Poetry Helper!</string>
     <string name="entry">Данное приложение призвано помочь начинающим поэтам, стихотворцам и прочим заинтересованным в стихосложении людям.</string>
     <string name="generator">Генератор рифм</string>

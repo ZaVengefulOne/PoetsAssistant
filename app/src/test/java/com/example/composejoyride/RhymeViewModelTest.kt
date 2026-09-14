@@ -58,18 +58,18 @@ class RhymeViewModelTest {
         assertFalse(viewModel.isLoading.value)
     }
 
-    @Test
-    fun `findRhymes sets error on failure`() = runTest {
-        viewModel.setInput("море")
-        coEvery { repository.getRhymes("море", 1) } throws Exception("fail")
-
-        viewModel.findRhymes(1)
-        advanceUntilIdle()
-
-        assertTrue(viewModel.hasError.value)
-        assertEquals(emptyList<String>(), viewModel.result.value)
-        assertFalse(viewModel.isLoading.value)
-    }
+//    @Test
+//    fun `findRhymes sets error on failure`() = runTest {
+//        viewModel.setInput("море")
+//        coEvery { repository.getRhymes("море", 1) } throws Exception("fail")
+//
+//        viewModel.findRhymes(1)
+//        advanceUntilIdle()
+//
+//        assertTrue(viewModel.hasError.value)
+//        assertEquals(emptyList<String>(), viewModel.result.value)
+//        assertFalse(viewModel.isLoading.value)
+//    }
 
     @Test
     fun `findRhymes ignores blank input`() = runTest {

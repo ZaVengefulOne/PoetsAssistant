@@ -5,22 +5,14 @@ import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Abc
-import androidx.compose.material.icons.filled.AutoStories
-import androidx.compose.material.icons.filled.ContactPage
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,13 +28,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composejoyride.R
 import com.example.composejoyride.data.utils.Constants
-import com.example.composejoyride.data.utils.NoteGraph
-import com.example.composejoyride.data.utils.VengButtonType
 import com.example.composejoyride.data.utils.sharedViewModel
-import com.example.composejoyride.ui.theme.Dimens
 import com.example.composejoyride.ui.theme.LocalTheme
-import com.example.composejoyride.ui.theme.TheFont
-import com.example.composejoyride.ui.theme.composables.VengButton
 import com.example.composejoyride.ui.viewModels.MainViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -72,7 +59,7 @@ fun MainScreen(navController: NavController, preferences: SharedPreferences) {
                 .padding(top = 16.dp, end = 8.dp)
         ) {
             Text(
-                text = "Новая главная:",
+                text = stringResource(id = R.string.new_main),
                 modifier = Modifier
                     .padding(start = 8.dp, end = 8.dp)
                     .align(Alignment.CenterVertically),
